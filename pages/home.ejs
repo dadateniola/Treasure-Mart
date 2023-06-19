@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Treasure Mart</title>
+    <%- include('partials/head') %>
+    <link rel="stylesheet" href="/styles/home.css">
+</head>
+<body data-barba="wrapper">
+    
+    <div class="container">
+         <main data-barba="container" data-namespace="home">
+            <section class="hero page">
+                <div class="hero-img">
+                    <img src="/images/model.png" alt="hero">
+                </div>
+                <div class="hero-text">
+                    <h2>Spare your wallet</h2>
+                    <h2>Shop at, </h2>
+                    <div class="hero-gap"></div>
+                    <div class="hero-name">
+                        <h1>Treasure Mart</h1>
+                    </div>
+                </div>
+            </section>
+            <section class="newest">
+                <div class="newest-img full img-here">
+                    <div class="overlay full"></div>
+                    <img src="/images/newest/light living room.jpg" alt="newest">
+                </div>
+
+                <div class="newest-prev img-here">
+                    <div class="overlay full"></div>
+                    <img src="/images/newest/clean living room.jpg" alt="newest">
+                </div>
+                <div class="newest-next img-here">
+                    <div class="overlay full"></div>
+                    <img src="/images/newest/bathroom.jpg" alt="newest">
+                </div>
+                <div class="newest-nav">
+                    <div class="newest-nav-before">
+                        <span class="newest-nav-box">
+                            <span>00</span>
+                        </span>
+                        <span class="newest-nav-box">
+                            <span>01</span>
+                        </span>
+                        <span class="newest-nav-box active">
+                            <span>02</span>
+                        </span>
+                    </div>
+                    <hr>
+                    <div class="newest-nav-after">
+                        <span class="newest-nav-box">
+                            <span>03</span>
+                        </span>
+                        <span class="newest-nav-box">
+                            <span>00</span>
+                        </span>
+                        <span class="newest-nav-box">
+                            <span>00</span>
+                        </span>
+                    </div>
+                </div>
+            </section>
+            <section class="sales page page-y">
+                <div class="sales-section">
+                    <div class="sales-head">
+                        <div class="head">
+                            <h1>Popular</h1>
+                            <span>SHOP</span>
+                        </div>
+                        <div class="options">
+                            <span class="off">Prevoius</span>
+                            <span>|</span>
+                            <span>Next</span>
+                        </div>
+                    </div>
+                    <div class="sales-box">
+                        <div class="sales-cont">
+                            <div class="sales-img img-here">
+                                <img src="/images/popular/shelves.jpg" alt="popular">
+                            </div>
+                            <br>
+                            <h3>Vintage Drawers</h3>
+                            <p>100.00 $</p>
+                        </div>
+                        <div class="sales-cont">
+                            <div class="sales-img img-here">
+                                <img src="/images/popular/living room.jpg" alt="popular">
+                            </div>
+                            <br>
+                            <h3>Fully Cushioned Couch</h3>
+                            <p>250.00 $</p>
+                        </div>
+                        <div class="sales-cont">
+                            <div class="sales-img img-here">
+                                <img src="/images/popular/scent.jpg" alt="popular">
+                            </div>
+                            <br>
+                            <h3>Toothpick Stand</h3>
+                            <p>15.99 $</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="gap"></div>
+                <div class="sales-section">
+                    <div class="sales-head">
+                        <div class="head">
+                            <h1>Deals</h1>
+                            <span>SHOP</span>
+                        </div>
+                        <div class="options">
+                            <span class="off">Prevoius</span>
+                            <span>|</span>
+                            <span>Next</span>
+                        </div>
+                    </div>
+                    <div class="sales-box">
+                        <div class="sales-cont">
+                            <div class="sales-img img-here">
+                                <img src="/images/deals/watch.jpg" alt="deal">
+                            </div>
+                            <br>
+                            <h3>Vintage Drawers</h3>
+                            <p>100.00 $</p>
+                        </div>
+                        <div class="sales-cont">
+                            <div class="sales-img img-here">
+                                <img src="/images/deals/watch with beads.jpg" alt="deal">
+                            </div>
+                            <br>
+                            <h3>Fully Cushioned Couch</h3>
+                            <p>250.00 $</p>
+                        </div>
+                        <div class="sales-cont">
+                            <div class="sales-img img-here">
+                                <img src="/images/deals/vase.jpg" alt="deal">
+                            </div>
+                            <br>
+                            <h3>Toothpick Stand</h3>
+                            <p>15.99 $</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="collections page page-y">
+                <div class="collection-head">
+                    <div class="head light">
+                        <h1>Collections</h1>
+                        <span>SHOP</span>
+                    </div>
+                </div>
+                <div class="gap"></div>
+                
+            </section>
+        </main>
+    </div>
+
+    <%- include('partials/foot') %>
+
+</body>
+</html>
