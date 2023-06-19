@@ -12,6 +12,8 @@
 
 /* Setting root variables */
 :root {
+    --hor-box-height: 300px;
+    --ver-box-height: 400px;
     --box-height: 360px;
     --page-y-padding: 140px;
     --page-padding: 80px;
@@ -90,8 +92,29 @@ p {
     color: var(--text-gray);
 }
 
+a {
+    text-decoration: none;
+    font-size: 18px;
+    color: var(--text-bright);
+}
+
 span {
     font-weight: 600;
+}
+
+input {
+    background-color: var(--color-light);
+    border: 3px solid black;
+    padding: 13px 10px 13px 18px;
+    font-size: .9em;
+}
+
+button {
+    padding: 16px 35px;
+    background-color: var(--color-dark);
+    color: var(--color-light);
+    border: none;
+    font-size: .9em;
 }
 
 .full {
@@ -143,4 +166,9 @@ span {
 
 .gap {
     height: calc(var(--page-y-padding) / 1.5);
+}
+
+.row {
+    display: flex;
+    gap: 15px;
 }

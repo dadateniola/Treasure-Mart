@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Treasure Mart</title>
     <%- include('partials/head') %>
-    <link rel="stylesheet" href="/styles/home.css">
+        <link rel="stylesheet" href="/styles/home.css">
 </head>
+
 <body data-barba="wrapper">
-    
+
     <div class="container">
-         <main data-barba="container" data-namespace="home">
+        <main data-barba="container" data-namespace="home">
             <section class="hero page">
                 <div class="hero-img">
                     <img src="/images/model.png" alt="hero">
@@ -145,7 +147,7 @@
                     </div>
                 </div>
             </section>
-            <section class="collections page page-y">
+            <section class="collections light page page-y">
                 <div class="collection-head">
                     <div class="head light">
                         <h1>Collections</h1>
@@ -153,7 +155,74 @@
                     </div>
                 </div>
                 <div class="gap"></div>
-                
+                <div class="collections-section hor">
+                    <div class="collections-text">
+                        <h6>View our unique collections and find the one that suits your needs.</h6>
+                        <br>
+                        <a href="/">View all collections</a>
+                    </div>
+                    <div class="collections-box">
+                        <div class="collections-img img-here">
+                            <img src="/images/collections/furniture.jpg" alt="collections">
+                        </div>
+                        <div class="collections-box-text">
+                            <h5>Collection</h5>
+                            <h6>Living Room Set</h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="collections-section ver">
+                    <div class="collections-box">
+                        <div class="collections-img img-here">
+                            <img src="/images/collections/brick wall.jpg" alt="collections">
+                        </div>
+                        <div class="collections-box-text">
+                            <h5>Collection</h5>
+                            <h6>Kitchen Set</h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="collections-section ver">
+                    <div></div>
+                    <div class="collections-box">
+                        <div class="collections-img img-here">
+                            <img src="/images/collections/architecture.jpg" alt="collections">
+                        </div>
+                        <div class="collections-box-text">
+                            <h5>Collection</h5>
+                            <h6>Bedroom Set</h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="collections-section hor">
+                    <div class="collections-box">
+                        <div class="collections-img img-here">
+                            <img src="/images/collections/kitchen.jpg" alt="collections">
+                        </div>
+                        <div class="collections-box-text">
+                            <h5>Collection</h5>
+                            <h6>Dining Room Set</h6>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="newsletter page page-y">
+                <div class="newsletter-box">
+                    <div class="newsletter-text">
+                        <h5>Newsletter</h5>
+                        <br>
+                        <h6>Register now with our newsletter and get the latest updates available</h6>
+                    </div>
+                    <div class="newsletter-form">
+                        <form>
+                            <input type="text" placeholder="Name" name="name">
+                            <div class="row">
+                                <input type="email" placeholder="Email" name="email">
+                                <button type="submit">Send</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </section>
         </main>
     </div>
@@ -161,4 +230,5 @@
     <%- include('partials/foot') %>
 
 </body>
+
 </html>

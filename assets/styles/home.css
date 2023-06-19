@@ -127,3 +127,100 @@
 .collections {
     background-color: var(--red);
 }
+
+.collections h6 {
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.collections h5 {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.collections.light h5 {
+    color: var(--text-bright);
+}
+
+.collections a {
+    text-decoration: underline;
+}
+
+.collections-section {
+    display: flex;
+    justify-content: space-between;
+    gap: 10vw;
+    width: 100%;
+}
+
+.collections-section.hor {
+    height: var(--hor-box-height);
+}
+
+.collections-section.ver {
+    height: var(--ver-box-height);
+}
+
+.collections-text {
+    width: 20em;
+}
+
+.collections-section.hor .collections-img {
+    width: 400px;
+    height: 100%;
+}
+
+.collections-section.ver .collections-img {
+    width: 330px;
+    height: 100%;
+}
+
+.collections-box {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.collections-box h6 {
+    max-width: 15em;
+}
+
+
+.newsletter {
+    display: flex;
+    justify-content: center;
+}
+
+.newsletter-text {
+    max-width: 300px;
+}
+
+.newsletter-box {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    width: 90%;
+}
+
+.newsletter-box h5 {
+    font-size: 2em;
+    font-weight: 600;
+}
+
+.newsletter-box h6 {
+    font-size: .9em;
+    font-weight: 400;
+}
+
+.newsletter-form input {
+    margin: 15px 0;
+    display: block;
+}
+
+.newsletter-form input:nth-child(2) {
+    margin-bottom: 0;
+}
+
+.newsletter-form .row {
+    align-items: center;
+}
