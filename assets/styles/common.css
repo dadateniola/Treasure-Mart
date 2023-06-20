@@ -12,6 +12,9 @@
 
 /* Setting root variables */
 :root {
+    --big-gap: 10vw;
+    --small-gap: 20px;
+    --hero-height: 100vh;
     --hor-box-height: 300px;
     --ver-box-height: 400px;
     --box-height: 360px;
@@ -51,6 +54,10 @@
     color: var(--text-gray);
 }
 
+.transparent {
+    color: transparent;
+}
+
 /* Page styles */
 body {
     font-family: 'Poppins', sans-serif;
@@ -68,21 +75,84 @@ body {
     padding-bottom: var(--page-y-padding);
 }
 
+.loading-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    z-index: 800;
+    pointer-events: none;
+    background: transparent;
+}
+
+.loading-screen {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/*Loader*/
+.bars {
+    width: 100%;
+    height: 100%;
+    background-color: var(--red);
+}
+
+.custom-loader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 45px;
+    height: 40px;
+    --c: linear-gradient(var(--color-dark) calc(50% - 10px), #0000 0 calc(50% + 10px), var(--color-dark) 0);
+    background:
+        var(--c) 0% 100%,
+        var(--c) 50% 100%,
+        var(--c) 100% 100%;
+    background-size: 9px calc(200% + 20px);
+    background-repeat: no-repeat;
+    animation: b4 1s infinite linear;
+}
+
+@keyframes b4 {
+    33% {
+        background-position: 0% 50%, 50% 100%, 100% 100%
+    }
+
+    50% {
+        background-position: 0% 0%, 50% 50%, 100% 100%
+    }
+
+    66% {
+        background-position: 0% 0%, 50% 0%, 100% 50%
+    }
+
+    100% {
+        background-position: 0% 0%, 50% 0%, 100% 0%
+    }
+}
+
 /* Element styles */
 h1 {
     font-family: 'Lexend', sans-serif;
     font-weight: 700;
-    font-size: 130px;
+    font-size: clamp(2em, 10vw, 130px);
     color: var(--red);
 }
 
 h2 {
     font-weight: 400;
-    font-size: 60px;
-    line-height: 90px;
+    font-size: clamp(2em, 5vw, 60px);
+    line-height: clamp(60px, 8vw, 90px);
 }
 
 h3 {
+    margin-bottom: 10px;
     font-size: 1em;
     color: var(--color-dark);
 }
@@ -100,6 +170,20 @@ a {
 
 span {
     font-weight: 600;
+}
+
+.old {
+    margin-right: 10px;
+    font-size: 0.8em;
+    color: rgba(216, 96, 95, 0.7);
+    text-decoration: line-through;
+    font-weight: 500;
+}
+
+.new {
+    font-size: 0.8em;
+    color: #23906B;
+    font-weight: 500;
 }
 
 input {
@@ -126,10 +210,22 @@ button {
     overflow: hidden;
 }
 
+.img-here {
+    background-color: var(--color-dark);
+    position: relative;
+    overflow: hidden;
+}
+
 .img-here img {
-    width: 100%;
     height: 100%;
+    width: 100%;
     object-fit: cover;
+}
+
+.parallax img {
+    position: absolute;
+    top: -25%;
+    height: 150%;
 }
 
 .overlay {
@@ -171,4 +267,19 @@ button {
 .row {
     display: flex;
     gap: 15px;
+}
+
+.txt-anim {
+    position: relative;
+    padding-right: 10px;
+    display: inline-block;
+    overflow: hidden;
+}
+
+.txt-anim span {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }

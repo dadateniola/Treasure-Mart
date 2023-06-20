@@ -6,27 +6,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Treasure Mart</title>
     <%- include('partials/head') %>
-        <link rel="stylesheet" href="/styles/home.css">
+    <link rel="stylesheet" href="/styles/home.css">
+
+    <!-- Changing scripts -->
+    <script defer src="/scripts/home.js"></script>
 </head>
 
 <body data-barba="wrapper">
 
-    <div class="container">
+    <div class="loading-container">
+        <div class="loading-screen">
+            <div class="custom-loader"></div>
+        </div>
+    </div>
+
+    <div class="container" data-scroll-container>
         <main data-barba="container" data-namespace="home">
-            <section class="hero page">
-                <div class="hero-img">
+            <section class="hero page" data-scroll-section>
+                <div class="hero-img" data-scroll data-scroll-speed="-0.6">
                     <img src="/images/model.png" alt="hero">
                 </div>
                 <div class="hero-text">
-                    <h2>Spare your wallet</h2>
-                    <h2>Shop at, </h2>
+                    <h2 class="txt-anim" data-scroll data-scroll-speed="0.2">Spare your wallet</h2>
+                    <br>
+                    <h2 class="txt-anim" data-scroll data-scroll-speed="0.1">Shop at,</h2>
                     <div class="hero-gap"></div>
                     <div class="hero-name">
-                        <h1>Treasure Mart</h1>
+                        <h1 class="txt-anim" data-scroll data-scroll-speed="0.3">Treasure Mart</h1>
+                    </div>
+                </div>
+                <div class="bonus">
+                    <div class="bonus-box img-here">
+                        <img src="/images/bonus/essential oil.jpg" alt="">
                     </div>
                 </div>
             </section>
-            <section class="newest">
+            <section class="newest" data-scroll-section>
                 <div class="newest-img full img-here">
                     <div class="overlay full"></div>
                     <img src="/images/newest/light living room.jpg" alt="newest">
@@ -34,7 +49,7 @@
 
                 <div class="newest-prev img-here">
                     <div class="overlay full"></div>
-                    <img src="/images/newest/clean living room.jpg" alt="newest">
+                    <img src="/images/newest/bedroom.jpg" alt="newest">
                 </div>
                 <div class="newest-next img-here">
                     <div class="overlay full"></div>
@@ -66,7 +81,7 @@
                     </div>
                 </div>
             </section>
-            <section class="sales page page-y">
+            <section class="sales page page-y" data-scroll-section>
                 <div class="sales-section">
                     <div class="sales-head">
                         <div class="head">
@@ -81,7 +96,7 @@
                     </div>
                     <div class="sales-box">
                         <div class="sales-cont">
-                            <div class="sales-img img-here">
+                            <div class="sales-img parallax img-here">
                                 <img src="/images/popular/shelves.jpg" alt="popular">
                             </div>
                             <br>
@@ -89,7 +104,7 @@
                             <p>100.00 $</p>
                         </div>
                         <div class="sales-cont">
-                            <div class="sales-img img-here">
+                            <div class="sales-img parallax img-here">
                                 <img src="/images/popular/living room.jpg" alt="popular">
                             </div>
                             <br>
@@ -97,7 +112,7 @@
                             <p>250.00 $</p>
                         </div>
                         <div class="sales-cont">
-                            <div class="sales-img img-here">
+                            <div class="sales-img parallax img-here">
                                 <img src="/images/popular/scent.jpg" alt="popular">
                             </div>
                             <br>
@@ -121,33 +136,36 @@
                     </div>
                     <div class="sales-box">
                         <div class="sales-cont">
-                            <div class="sales-img img-here">
+                            <div class="sales-img parallax img-here">
                                 <img src="/images/deals/watch.jpg" alt="deal">
                             </div>
                             <br>
-                            <h3>Vintage Drawers</h3>
-                            <p>100.00 $</p>
+                            <h3>Glashutte Original Watch</h3>
+                            <span class="old">1,500.00 $</span>
+                            <span class="new">1,200.00 $</span>
                         </div>
                         <div class="sales-cont">
-                            <div class="sales-img img-here">
+                            <div class="sales-img parallax img-here">
                                 <img src="/images/deals/watch with beads.jpg" alt="deal">
                             </div>
                             <br>
-                            <h3>Fully Cushioned Couch</h3>
-                            <p>250.00 $</p>
+                            <h3>Jaegar LeCoultre Watch</h3>
+                            <span class="old">25,000.00 $</span>
+                            <span class="new">20,150.00 $</span>
                         </div>
                         <div class="sales-cont">
-                            <div class="sales-img img-here">
+                            <div class="sales-img parallax img-here">
                                 <img src="/images/deals/vase.jpg" alt="deal">
                             </div>
                             <br>
                             <h3>Toothpick Stand</h3>
-                            <p>15.99 $</p>
+                            <span class="old">155.99 $</span>
+                            <span class="new">85.00 $</span>
                         </div>
                     </div>
                 </div>
             </section>
-            <section class="collections light page page-y">
+            <section class="collections light page page-y" data-scroll-section>
                 <div class="collection-head">
                     <div class="head light">
                         <h1>Collections</h1>
@@ -161,9 +179,11 @@
                         <br>
                         <a href="/">View all collections</a>
                     </div>
-                    <div class="collections-box">
-                        <div class="collections-img img-here">
+                    <div class="collections-box flex-end">
+                        <div class="collections-img parallax img-here">
                             <img src="/images/collections/furniture.jpg" alt="collections">
+                            <div class="collections-img-overlay full"></div>
+                            <h3 class="collections-img-text">Living Room Set</h3>
                         </div>
                         <div class="collections-box-text">
                             <h5>Collection</h5>
@@ -173,8 +193,10 @@
                 </div>
                 <div class="collections-section ver">
                     <div class="collections-box">
-                        <div class="collections-img img-here">
+                        <div class="collections-img parallax img-here">
                             <img src="/images/collections/brick wall.jpg" alt="collections">
+                            <div class="collections-img-overlay full"></div>
+                            <h3 class="collections-img-text">Kitchen Set</h3>
                         </div>
                         <div class="collections-box-text">
                             <h5>Collection</h5>
@@ -185,8 +207,10 @@
                 <div class="collections-section ver">
                     <div></div>
                     <div class="collections-box">
-                        <div class="collections-img img-here">
+                        <div class="collections-img parallax img-here">
                             <img src="/images/collections/architecture.jpg" alt="collections">
+                            <div class="collections-img-overlay full"></div>
+                            <h3 class="collections-img-text">Bedroom Set</h3>
                         </div>
                         <div class="collections-box-text">
                             <h5>Collection</h5>
@@ -195,9 +219,11 @@
                     </div>
                 </div>
                 <div class="collections-section hor">
-                    <div class="collections-box">
-                        <div class="collections-img img-here">
+                    <div class="collections-box flex-start">
+                        <div class="collections-img parallax img-here">
                             <img src="/images/collections/kitchen.jpg" alt="collections">
+                            <div class="collections-img-overlay full"></div>
+                            <h3 class="collections-img-text">Dining Room Set</h3>
                         </div>
                         <div class="collections-box-text">
                             <h5>Collection</h5>
@@ -206,7 +232,10 @@
                     </div>
                 </div>
             </section>
-            <section class="newsletter page page-y">
+            <section class="newsletter page page-y" data-scroll-section>
+                <div class="newsletter-img img-here">
+                    <img src="/images/pattern.jpg" alt="pattern">
+                </div>
                 <div class="newsletter-box">
                     <div class="newsletter-text">
                         <h5>Newsletter</h5>
@@ -228,7 +257,7 @@
     </div>
 
     <%- include('partials/foot') %>
-
+    
 </body>
 
 </html>
