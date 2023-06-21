@@ -18,6 +18,6 @@ const scroller = new LocomotiveScroll({
 //Attch parallax to images
 const parallaxImages = document.querySelectorAll(".parallax img").forEach(elem => {
     elem.setAttribute('data-scroll', '');
-    elem.setAttribute('data-scroll-speed', '-0.1');
+    elem.setAttribute('data-scroll-speed', '-0.15');
     elem.setAttribute('data-scroll-position', 'top');
 })
