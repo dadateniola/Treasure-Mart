@@ -1,7 +1,7 @@
 .hero {
     padding-top: 15vh;
     width: 100%;
-    height: calc(var(--hero-height) + ((40/100) * (var(--ver-box-height))));
+    height: calc(100vh + ((80/100) * var(--ver-box-height)));
     background: linear-gradient(180deg, #BFBEC6 0%, #CCCBD1 13.54%, #D6D5DB 24.48%, #D4D3D9 52.6%, #D2D0D7 64.58%, #CECBD2 86.46%);
 }
 
