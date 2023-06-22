@@ -23,8 +23,8 @@
     --page-padding: 80px;
     --color-light: #ffffff;
     --color-dark: #000000;
-    --text-gray: rgba(92, 92, 92, 0.8);
-    --text-bright: rgba(255, 251, 251, 0.7);
+    --text-gray: rgb(92, 92, 92);
+    --text-bright: rgb(190, 190, 190);
     --red: #BE1614;
 }
 
@@ -56,7 +56,7 @@
 }
 
 .transparent {
-    color: transparent;
+    color: transparent !important;
 }
 
 span[data-invisible] {
@@ -99,6 +99,11 @@ body {
     height: 100%;
     display: flex;
     flex-direction: column;
+    background-color: transparent;
+}
+
+.loading-screen.on {
+    background: linear-gradient(180deg, #BFBEC6 0%, #CCCBD1 13.54%, #D6D5DB 24.48%, #D4D3D9 52.6%, #D2D0D7 64.58%, #CECBD2 86.46%);
 }
 
 /*Loader*/
@@ -275,6 +280,7 @@ button {
     gap: 15px;
 }
 
+.start-anim,
 .txt-anim {
     position: relative;
     padding-right: 10px;
@@ -282,6 +288,7 @@ button {
     overflow: hidden;
 }
 
+.start-anim span,
 .txt-anim span {
     position: absolute;
     top: 0;

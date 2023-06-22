@@ -3,6 +3,7 @@ const oddBars = [];
 
 setBars(5);
 setupText();
+scrollAnimations();
 
 //Newest Slider
 const newestImgBox = select(".newest-img-box");
@@ -12,7 +13,7 @@ const navAfter = select('.newest-nav-after');
 
 var activeSlider = 0;
 var start = parseInt(getComputedStyle(select(':root')).getPropertyValue('--new-span-height'), 10);
-const timer = 2;
+var timer = 0;
 
 //changes active slider
 const changeActiveSlider = () => ((activeSlider + 1) > newestImages.length) ? activeSlider = 1 : activeSlider++;
@@ -55,16 +56,13 @@ function setupNewest() {
     //attach appropriate spans
     attachNewestSpans();
     attachActiveImg();
-
-    //Start animation
-    changeNewest();
 }
 
 function attachNewestSpans() {
     const before = [];
     const after = [];
 
-    selectAllWith(navBefore,'.newest-nav-slider').forEach(elem => before.push(elem));
+    selectAllWith(navBefore, '.newest-nav-slider').forEach(elem => before.push(elem));
 
     selectAllWith(navAfter, '.newest-nav-slider').forEach(elem => after.push(elem));
 
@@ -76,12 +74,12 @@ function attachNewestSpans() {
     before.forEach((elem, index) => {
         let span = document.createElement("span");
         let condition = (activeSlider - index <= 0);
-        
+
         span.innerHTML = condition ? '00' : `0${(activeSlider - index)}`;
 
         condition ? span.setAttribute('data-invisible', '') : null;
         (activeSlider - index == activeSlider) ? span.style.color = 'red' : null;
-        
+
         elem.append(span);
     })
 
@@ -110,12 +108,46 @@ function changeNewest() {
     newestTl.to('.newest-img-box img', { scale: 1, opacity: 1, delay: timer })
         .to('.newest-nav-slider', { y: -start, stagger: 0.1 })
         .call(() => {
+            if(!timer) timer = 1;
             newestImgBox.children[0].remove();
             resetSliders();
             changeNewest();
         })
 
 }
+
+
+//Page load animation
+function scrollAnimations() {
+    const tl = gsap.timeline();
+
+    //Section headers animations
+    selectAll('.txt-anim span').forEach(elem => {
+        const spanTl = gsap.timeline();
+
+        spanTl.to(elem, { duration: 0.5, xPercent: 0 })
+            .call(() => elem.parentNode.classList.remove('transparent'))
+            .to(elem, { duration: 0.5, xPercent: 110 })
+
+        ScrollTrigger.create({
+            trigger: elem,
+            animation: spanTl,
+            start: 'top 80%',
+        })
+    })
+
+    //Start page scrolll animations
+    tl.call(() => {
+        //Start newest animation
+        changeNewest();
+    })
+    ScrollTrigger.create({
+        trigger: '.newest',
+        animation: tl,
+        start: 'top 50%',
+    })
+}
+
 
 
 barba.init({
@@ -148,7 +180,12 @@ function setBars(num = 1) {
 }
 
 function setupText() {
-    const text = selectAll(".txt-anim");
+    //Add txt-anim to headers
+    selectAll('.head h1, .head span, .options span').forEach(elem => {
+        elem.classList.add("txt-anim")
+    })
+
+    const text = selectAll(".txt-anim, .start-anim");
 
     if (!text) return;
 
@@ -157,7 +194,7 @@ function setupText() {
         const span = document.createElement("span");
 
         span.style.backgroundColor = `${color}`;
-        gsap.set(span, { xPercent: -110 })
+        gsap.set(span, { xPercent: -110, color: 'transparent' })
 
         elem.classList.add("transparent")
         elem.append(span);
@@ -170,14 +207,14 @@ function pageTransition(params = {}) {
     const durations = [.8, .5]
 
     if (reloaded) {
-        tl.set('.loading-screen, .custom-loader', { yPercent: 0, opacity: 0 })
-            // .to('.custom-loader', { duration: durations[0], opacity: 0, delay: 1 })
-            // .to(gsap.utils.shuffle(oddBars), { duration: durations[0], xPercent: 100, ease: "Power4.easeIn", delay: .5, stagger: 0.2 })
-            // .to(gsap.utils.shuffle(evenBars), { duration: durations[0], xPercent: -100, ease: "Power4.easeIn", stagger: 0.2 }, "<")
-            // .call(() => scroller.scrollTo(0))
+        tl.call(() => select('.loading-screen').classList.remove('on'))
+            .to('.custom-loader', { duration: durations[0], opacity: 0, delay: 1 })
+            .to(gsap.utils.shuffle(oddBars), { duration: durations[0], xPercent: 100, ease: "Power4.easeIn", delay: .5, stagger: 0.2 })
+            .to(gsap.utils.shuffle(evenBars), { duration: durations[0], xPercent: -100, ease: "Power4.easeIn", stagger: 0.2 }, "<")
+            .call(() => scroller.scrollTo(0))
             .fromTo('.hero-img img', { scale: 1.5, opacity: 0 }, { duration: durations[1], scale: 1, opacity: 1 })
-            .to('.txt-anim span', { duration: durations[1], xPercent: 0, stagger: 0.1 })
-            .call(() => document.querySelectorAll('.txt-anim').forEach(elem => elem.classList.remove("transparent")))
-            .to('.txt-anim span', { duration: durations[1], xPercent: 110, stagger: 0.2 })
+            .to('.start-anim span', { duration: durations[1], xPercent: 0, stagger: 0.1 })
+            .call(() => document.querySelectorAll('.start-anim').forEach(elem => elem.classList.remove("transparent")))
+            .to('.start-anim span', { duration: durations[1], xPercent: 110, stagger: 0.2 })
     }
 }
