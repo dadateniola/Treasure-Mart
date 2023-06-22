@@ -53,45 +53,29 @@
 .newest {
     position: relative;
     width: 100%;
-    height: calc(100vh + 20px);
+    height: 80vh;
+    background: url(/images/newest-bg.jpg) center center no-repeat;
+    background-size: cover;
     background-color: var(--color-dark);
     border-top: 4px solid var(--red);
     border-bottom: 4px solid var(--red);
 }
 
-.newest-prev,
-.newest-next {
-    --length: calc(var(--ver-box-height) / 2);
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: var(--length);
-    height: var(--length);
-    overflow: hidden;
-    border: 2px solid var(--red);
-    border-left: none;
-    border-radius: 0px calc(var(--length) / 2) calc(var(--length) / 2) 0px;
-}
-
-.newest-prev {
-    left: 0;
-}
-
-.newest-next {
-    right: 0;
-    transform: matrix(-1, 0, 0, 1, 0, 0) translateY(-50%);
-}
-
 .newest-nav {
     position: absolute;
     width: 100%;
-    bottom: 25px;
+    bottom: 1vw;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
     align-items: center;
     justify-content: center;
     gap: var(--small-gap);
+}
+
+.newest-nav-before,
+.newest-nav-after {
+    height: var(--new-span-height);
 }
 
 .newest-nav hr {
@@ -101,17 +85,47 @@
 }
 
 .newest-nav-box {
-    margin: 0 5px;
-    height: 35px;
+    display: inline-block;
+    margin: 0 1vw;
+    height: var(--new-span-height);
+    overflow: hidden;
 }
 
 .newest-nav-box span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: calc(var(--new-span-height) - 10px);
+    height: var(--new-span-height);
     font-size: 20px;
     color: var(--color-light);
 }
 
 .newest-nav-box.active span {
     color: var(--red);
+}
+
+.newest-img .img-here {
+    background-color: transparent;
+}
+
+.newest-img .overlay {
+    background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.7));
+}
+
+.newest-img-box img {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.newest-images {
+    height: 0;
+}
+
+.newest-images img {
+    width: 0;
+    height: 0;
 }
 
 
@@ -314,11 +328,6 @@
 
     .newest-nav {
         gap: calc(var(--small-gap) / 2);
-    }
-
-    .newest-next,
-    .newest-prev {
-        display: none;
     }
 
     .newest-nav-box span {

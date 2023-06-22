@@ -5,18 +5,116 @@ setBars(5);
 setupText();
 
 //Newest Slider
-const newestImgBox = select(".newest-img");
-const newestBtns = selectAll("[data-newest-btn]");
+const newestImgBox = select(".newest-img-box");
+const newestImages = selectAll('.newest-images img');
+const navBefore = select('.newest-nav-before');
+const navAfter = select('.newest-nav-after');
 
-newestBtns.forEach(elem => {
-    elem.addEventListener("click", function () {
-        (this.getAttribute('data-newest-btn') == 'next') ? changeNewest(true) : changeNewest(false)
-    })
-})
+var activeSlider = 0;
+var start = parseInt(getComputedStyle(select(':root')).getPropertyValue('--new-span-height'), 10);
+const timer = 2;
+
+//changes active slider
+const changeActiveSlider = () => ((activeSlider + 1) > newestImages.length) ? activeSlider = 1 : activeSlider++;
+
+//changes active image
+const attachActiveImg = () => {
+    let clone = newestImages[(((activeSlider - 1) < 0) ? 0 : (activeSlider - 1))].cloneNode(true)
+    newestImgBox.append(clone)
+    gsap.set(clone, { scale: 1.2, opacity: 0 })
+};
+
+//resets all sliders
+const resetSliders = () => {
+    let tl = gsap.timeline();
+    tl.call(() => selectAll('.newest-nav-slider').forEach(elem => elem.children[0].remove()))
+    tl.set('.newest-nav-slider', { duration: 0, y: 0 })
+}
+
+//setup newest section
+setupNewest();
 
 //Newest Functions
-function changeNewest(condition = undefined) {
-    
+function setupNewest() {
+    for (let i = 0; i < newestImages.length; i++) {
+        let navBoxClone;
+
+        let navBox = document.createElement("span");
+        let navSlider = document.createElement("div");
+
+        navBox.classList.add("newest-nav-box");
+        navSlider.classList.add("newest-nav-slider");
+
+        navBox.appendChild(navSlider)
+        navBoxClone = navBox.cloneNode(true);
+
+        navBefore.append(navBox);
+        navAfter.append(navBoxClone);
+    }
+
+    //attach appropriate spans
+    attachNewestSpans();
+    attachActiveImg();
+
+    //Start animation
+    changeNewest();
+}
+
+function attachNewestSpans() {
+    const before = [];
+    const after = [];
+
+    selectAllWith(navBefore,'.newest-nav-slider').forEach(elem => before.push(elem));
+
+    selectAllWith(navAfter, '.newest-nav-slider').forEach(elem => after.push(elem));
+
+    //reverse before
+    before.reverse();
+
+    //attach spans based on the current active slider
+    //then attach invisible attribute to the ones not needed, then add to slider
+    before.forEach((elem, index) => {
+        let span = document.createElement("span");
+        let condition = (activeSlider - index <= 0);
+        
+        span.innerHTML = condition ? '00' : `0${(activeSlider - index)}`;
+
+        condition ? span.setAttribute('data-invisible', '') : null;
+        (activeSlider - index == activeSlider) ? span.style.color = 'red' : null;
+        
+        elem.append(span);
+    })
+
+    after.forEach((elem, index) => {
+        let span = document.createElement("span");
+        let condition = (activeSlider + (index + 1) > newestImages.length);
+
+        span.innerHTML = condition ? '00' : `0${(activeSlider + (index + 1))}`;
+        condition ? span.setAttribute('data-invisible', '') : null;
+
+        elem.append(span);
+    })
+}
+
+function changeNewest() {
+    const newestTl = gsap.timeline();
+
+    //Change active slider and attch new spans under current ones
+    changeActiveSlider()
+    attachNewestSpans();
+
+    //Change image
+    attachActiveImg();
+
+    //Move the sliders and reset them after
+    newestTl.to('.newest-img-box img', { scale: 1, opacity: 1, delay: timer })
+        .to('.newest-nav-slider', { y: -start, stagger: 0.1 })
+        .call(() => {
+            newestImgBox.children[0].remove();
+            resetSliders();
+            changeNewest();
+        })
+
 }
 
 

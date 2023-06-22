@@ -6,10 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Treasure Mart</title>
     <%- include('partials/head') %>
-    <link rel="stylesheet" href="/styles/home.css">
+        <link rel="stylesheet" href="/styles/home.css">
 
-    <!-- Changing scripts -->
-    <script defer src="/scripts/home.js"></script>
+        <!-- Changing scripts -->
+        <script defer src="/scripts/home.js"></script>
 </head>
 
 <body data-barba="wrapper">
@@ -42,43 +42,21 @@
                 </div>
             </section>
             <section class="newest" data-scroll-section>
-                <div class="newest-img full img-here">
+                <div class="newest-img full">
+                    <div class="newest-img-box full img-here"></div>
                     <div class="overlay full"></div>
-                    <img src="/images/newest/light living room.jpg" alt="newest">
-                </div>
-
-                <div class="newest-prev img-here" data-newest-btn="prev">
-                    <div class="overlay full"></div>
-                    <img src="/images/newest/bedroom.jpg" alt="newest">
-                </div>
-                <div class="newest-next img-here" data-newest-btn="next">
-                    <div class="overlay full"></div>
-                    <img src="/images/newest/bathroom.jpg" alt="newest">
                 </div>
                 <div class="newest-nav">
-                    <div class="newest-nav-before">
-                        <span class="newest-nav-box">
-                            <span>00</span>
-                        </span>
-                        <span class="newest-nav-box">
-                            <span>01</span>
-                        </span>
-                        <span class="newest-nav-box active">
-                            <span>02</span>
-                        </span>
-                    </div>
+                    <div class="newest-nav-before"></div>
                     <hr>
-                    <div class="newest-nav-after">
-                        <span class="newest-nav-box">
-                            <span>03</span>
-                        </span>
-                        <span class="newest-nav-box">
-                            <span>00</span>
-                        </span>
-                        <span class="newest-nav-box">
-                            <span>00</span>
-                        </span>
-                    </div>
+                    <div class="newest-nav-after"></div>
+                </div>
+                <div class="newest-images">
+                    <% if (newestImages.length > 0) { %>
+                        <% for( let i = 0; i < newestImages.length; i++ ) { %>
+                            <img src="/images/newest/<%= newestImages[i] %>" alt="newest">
+                        <% } %>
+                    <% } %>
                 </div>
             </section>
             <section class="sales page page-y" data-scroll-section>
@@ -257,7 +235,7 @@
     </div>
 
     <%- include('partials/foot') %>
-    
+
 </body>
 
 </html>

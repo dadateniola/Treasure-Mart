@@ -1,7 +1,9 @@
 //Setting up
 const body = document.body;
-const select = (e) => document.querySelector(e);
-const selectAll = (e) => document.querySelectorAll(e);
+const select = (elem) => document.querySelector(elem);
+const selectAll = (elem) => document.querySelectorAll(elem);
+const selectWith = (parent, elem) => parent.querySelector(elem);
+const selectAllWith = (parent, elem) => parent.querySelectorAll(elem);
 
 //Register Scrolltrigger
 gsap.registerPlugin(ScrollTrigger);

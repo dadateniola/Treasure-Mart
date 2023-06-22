@@ -12,6 +12,7 @@
 
 /* Setting root variables */
 :root {
+    --new-span-height: 35px;
     --big-gap: 10vw;
     --small-gap: 20px;
     --hero-height: 100vh;
@@ -56,6 +57,11 @@
 
 .transparent {
     color: transparent;
+}
+
+span[data-invisible] {
+    opacity: 0;
+    visibility: hidden;
 }
 
 /* Page styles */
