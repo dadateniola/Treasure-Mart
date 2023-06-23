@@ -1,31 +1,46 @@
-const fs = require('fs');
+const fs = require('fs').promises;
 const path = require('path');
 const mime = require('mime-types');
 
-const imagePath = path.join(__dirname, "..", "assets", "images")
+const imagePath = path.join(__dirname, "..", "assets", "images");
 
-const showHomePage = (req, res) => {
-    const newestPath = path.join(imagePath, "newest");
+const getImages = async (dir, count) => {
+    if(!dir) return [];
 
-    fs.readdir(newestPath, (err, files) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).send('Error reading directory');
-        }
+    const imageDir = path.join(imagePath, dir);
 
-        const newestImages = [];
+    try {
+        //const files = fs.readdirSync(),
+        //this method works of you dont import promises directly with fs
+        //async/await isnt needed if used
+        const files = await fs.readdir(imageDir);
+        const images = [];
 
-        files.forEach((file) => {
-            const filePath = newestPath + '/' + file;
+        for (const file of files) {
+            const filePath = path.join(imageDir, file);
             const mimeType = mime.lookup(filePath);
 
-            if (mimeType && mimeType.startsWith('image/')) {
-                newestImages.push(file);
-            }
-        });
+            if (mimeType && mimeType.startsWith('image/')) images.push(file);
+
+            if (images.length === count) break
+        }
+
+        return images
+    } catch (err) {
+        console.error(err);
+        return [];
+    }
+};
+
+const showHomePage = async (req, res) => {
+    try {
+        let newestImages = await getImages('newest', 5);
 
         res.render('home', { newestImages });
-    })
+    } catch (err) {
+        console.log(err);
+        res.render('home', { newestImages: [] })
+    }
 }
 
 module.exports = { showHomePage };

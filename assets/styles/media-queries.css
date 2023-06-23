@@ -44,7 +44,7 @@
 
 @media (max-width: 600px) {
     :root {
-        --new-span-height: 32px    
+        --new-span-height: 30px    
     }
     
     .row {

@@ -1,15 +1,87 @@
+//Page Paramaters
 const evenBars = [];
 const oddBars = [];
-
-setBars(5);
-setupText();
-scrollAnimations();
-
 //Newest Slider
 const newestImgBox = select(".newest-img-box");
 const newestImages = selectAll('.newest-images img');
 const navBefore = select('.newest-nav-before');
 const navAfter = select('.newest-nav-after');
+
+
+//--------------------------------------------------------
+//Setup bars for page animations
+function setBars(num = 1) {
+    const parent = select(".loading-screen");
+
+    if (!parent) return;
+
+    for (let i = 0; i < num; i++) {
+        let div = document.createElement("div");
+
+        (i % 2) ? evenBars.push(div) : oddBars.push(div);
+
+        div.classList.add("bars");
+        parent.append(div);
+    }
+}
+
+//setup text for animations
+function setupText() {
+    //Add txt-anim to headers
+    selectAll('.head h1, .head span, .options span').forEach(elem => {
+        elem.classList.add("txt-anim");
+    })
+
+    const text = selectAll(".txt-anim, .start-anim");
+
+    if (!text) return;
+
+    text.forEach((elem) => {
+        const color = window.getComputedStyle(elem).getPropertyValue("color");
+        const span = document.createElement("span");
+
+        span.style.backgroundColor = `${color}`;
+        gsap.set(span, { xPercent: -110, color: 'transparent' })
+
+        elem.classList.add("transparent")
+        elem.append(span);
+    })
+}
+
+//Scroll animation
+function scrollAnimations() {
+    const tl = gsap.timeline();
+
+    //Section headers animations
+    selectAll('.txt-anim span').forEach(elem => {
+        const spanTl = gsap.timeline();
+
+        spanTl.to(elem, { duration: 0.5, xPercent: 0 })
+            .call(() => elem.parentNode.classList.remove('transparent'))
+            .to(elem, { duration: 0.5, xPercent: 110 })
+
+        ScrollTrigger.create({
+            trigger: elem,
+            animation: spanTl,
+            start: 'top 80%',
+        })
+    })
+
+    //Start slider animations
+    tl.call(() => {
+        //Start newest animation
+        changeNewest();
+    })
+    ScrollTrigger.create({
+        trigger: '.newest',
+        animation: tl,
+        start: 'top 50%',
+    })
+}
+//--------------------------------------------------------
+
+
+
 
 var activeSlider = 0;
 var start = parseInt(getComputedStyle(select(':root')).getPropertyValue('--new-span-height'), 10);
@@ -32,11 +104,10 @@ const resetSliders = () => {
     tl.set('.newest-nav-slider', { duration: 0, y: 0 })
 }
 
-//setup newest section
-setupNewest();
-
 //Newest Functions
 function setupNewest() {
+    if (!newestImages.length) return;
+
     for (let i = 0; i < newestImages.length; i++) {
         let navBoxClone;
 
@@ -95,6 +166,8 @@ function attachNewestSpans() {
 }
 
 function changeNewest() {
+    if (!newestImages.length) return;
+
     const newestTl = gsap.timeline();
 
     //Change active slider and attch new spans under current ones
@@ -106,9 +179,9 @@ function changeNewest() {
 
     //Move the sliders and reset them after
     newestTl.to('.newest-img-box img', { scale: 1, opacity: 1, delay: timer })
-        .to('.newest-nav-slider', { y: -start, stagger: 0.1 })
+        .to('.newest-nav-slider', { duration: 0.2, y: -start, stagger: 0.2 })
         .call(() => {
-            if(!timer) timer = 1;
+            if (!timer) timer = 1;
             newestImgBox.children[0].remove();
             resetSliders();
             changeNewest();
@@ -117,88 +190,11 @@ function changeNewest() {
 }
 
 
-//Page load animation
-function scrollAnimations() {
-    const tl = gsap.timeline();
-
-    //Section headers animations
-    selectAll('.txt-anim span').forEach(elem => {
-        const spanTl = gsap.timeline();
-
-        spanTl.to(elem, { duration: 0.5, xPercent: 0 })
-            .call(() => elem.parentNode.classList.remove('transparent'))
-            .to(elem, { duration: 0.5, xPercent: 110 })
-
-        ScrollTrigger.create({
-            trigger: elem,
-            animation: spanTl,
-            start: 'top 80%',
-        })
-    })
-
-    //Start page scrolll animations
-    tl.call(() => {
-        //Start newest animation
-        changeNewest();
-    })
-    ScrollTrigger.create({
-        trigger: '.newest',
-        animation: tl,
-        start: 'top 50%',
-    })
-}
-
-
-
-barba.init({
-    sync: true,
-
-    transitions: [
-        {
-            name: 'default',
-            once() {
-                pageTransition({ reloaded: true });
-            }
-        }
-    ]
-})
-
-//Page animations
-function setBars(num = 1) {
-    const parent = select(".loading-screen");
-
-    if (!parent) return;
-
-    for (let i = 0; i < num; i++) {
-        let div = document.createElement("div");
-
-        (i % 2) ? evenBars.push(div) : oddBars.push(div);
-
-        div.classList.add("bars");
-        parent.append(div);
-    }
-}
-
-function setupText() {
-    //Add txt-anim to headers
-    selectAll('.head h1, .head span, .options span').forEach(elem => {
-        elem.classList.add("txt-anim")
-    })
-
-    const text = selectAll(".txt-anim, .start-anim");
-
-    if (!text) return;
-
-    text.forEach((elem) => {
-        const color = window.getComputedStyle(elem).getPropertyValue("color");
-        const span = document.createElement("span");
-
-        span.style.backgroundColor = `${color}`;
-        gsap.set(span, { xPercent: -110, color: 'transparent' })
-
-        elem.classList.add("transparent")
-        elem.append(span);
-    })
+function setupPage() {
+    setBars(5);
+    setupText();
+    scrollAnimations();
+    setupNewest();
 }
 
 function pageTransition(params = {}) {
@@ -218,3 +214,18 @@ function pageTransition(params = {}) {
             .to('.start-anim span', { duration: durations[1], xPercent: 110, stagger: 0.2 })
     }
 }
+
+//Initialize barba
+barba.init({
+    sync: true,
+
+    transitions: [
+        {
+            name: 'default',
+            once() {
+                setupPage();
+                pageTransition({ reloaded: true });
+            }
+        }
+    ]
+})
