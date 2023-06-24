@@ -42,7 +42,7 @@ app.use((req, res, next) => {
 })
 
 //Attach alert to the frontend
-//Syntax: req.alert({head, msg, type, url, txt, img})
+//Syntax: req.alert({head, msg, type, url, text, image})
 app.use((req, res, next) => {
     //Set parameters
     const alert = res.locals.alert;
@@ -51,20 +51,38 @@ app.use((req, res, next) => {
     req.alert = async function (options = {}) {
         //Set a button or link depending to be displayed
         if (options?.type) {
-            (options.type == 'btn')
-                ?
-                options.action = `<button>${options?.txt || 'No message'}</button>`
-                :
-                options.action = (options?.url) ? `<a href="${options.url}">${options?.txt || 'No message'}</a>` : `<a>${options?.txt || 'No message'} (No location)</a>`;
+            let texts = 0;
+            let isArray = true;
+
+            (options?.text) ? ((Array.isArray(options.text)) ? texts = options.text.length : isArray = false) : null;
+            options.action = [];
+
+            if (options.type.toLowerCase() == 'btn') {
+                if (isArray) {
+                    for (let i = 0; i < texts; i++) {
+                        options.action.push(`<button data-alert-btn>${options?.text[i] || 'No message'}</button>`);
+                    }
+                } else {
+                    options.action.push(`<button data-alert-btn>${options?.text || 'No message'}</button>`);
+                }
+            } else {
+                if (isArray) {
+                    for (let i = 0; i < texts; i++) {
+                        options.action.push((options?.url) ? `<a href="${options.url}">${options?.text[i] || 'No message'}</a>` : `<a>${options?.text[i] || 'No message'} (No location)</a>`);
+                    }
+                } else {
+                    options.action.push((options?.url) ? `<a href="${options.url}">${options?.text || 'No message'}</a>` : `<a>${options?.text || 'No message'} (No location)</a>`);
+                }
+            }
         }
 
         //Set an image to come with the alert
-        if (options?.img) {
+        if (options?.image) {
             try {
                 let imageFiles;
                 const files = await fs.readdir(avatarPath);
 
-                imageFiles = files.filter(file => file.toLowerCase().includes(options.img));
+                imageFiles = files.filter(file => file.toLowerCase().includes(options.image));
 
                 //Set or change the image to be displayed
                 if (!imageFiles.length) alert.image = 'default.png';
@@ -77,7 +95,7 @@ app.use((req, res, next) => {
                 imageFiles = [];
             }
         }
-        
+
         //Push the modified object in alerts
         alert.alerts.push(options);
     }

@@ -1,16 +1,21 @@
 <div class="alert-cont">
     <div class="alert-box">
-        <% if (locals.alert?.alerts.length) { %>
+        <% const alerts = locals.alert?.alerts %>
+        <% if (alerts.length) { %>
             <div class="alert">
-                <button class="alert-close"><i class="fa-solid fa-xmark"></i></button>
+                <button class="alert-close" onclick="Alert.closeAlert()"><i class="fa-solid fa-xmark"></i></button>
                 <div class="alert-text-box">
-                    <% for( let i=0; i < locals.alert?.alerts.length; i++ ) { %>
+                    <% for( let i=0; i < alerts.length; i++ ) { %>
                         <div class="alert-text">
-                            <h5 class="txt-anim"><%= locals.alert?.alerts[i]?.head || '' %></h5>
+                            <h5 class="txt-anim"><%= alerts[i]?.head || '' %></h5>
+                            <br>
+                            <h6 class="txt-anim"><%- alerts[i]?.msg || '' %></h6>
 
-                            <h6 class="txt-anim"><%- locals.alert?.alerts[i]?.msg || '' %></h6>
-
-                            <div class="alert-action"><%- locals.alert?.alerts[i]?.action || '' %></div>
+                            <div class="alert-action">
+                                <% for( let j = 0; j < alerts[i].action.length; j++ ) { %>
+                                    <%- alerts[i]?.action[j] || '' %>
+                                <% } %>
+                            </div>
                         </div>
                     <% } %>
                 </div>

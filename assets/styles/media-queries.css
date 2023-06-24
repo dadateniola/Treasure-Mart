@@ -50,7 +50,7 @@
     .row {
         flex-wrap: wrap;
     }
-    
+
     .alert {
         background-color: var(--color-dark);
         color: var(--color-light);
@@ -83,6 +83,12 @@
     
     .alert-text a {
         color: pink;
+    }
+
+    .alert-close {
+        background-color: var(--color-light);
+        color: var(--color-dark);
+        border: 2px solid var(--color-dark);
     }
 
     .alert-action a,

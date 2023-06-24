@@ -151,15 +151,26 @@ function onceAnimation(condition = true) {
 
     const barsAnim = barsAnimation(condition);
     const alertAnim = showAlerts();
-    
+
     tl.add(barsAnim)
         .fromTo('.hero-img img', { scale: 1.5, opacity: 0 }, { duration: durations[1], scale: 1, opacity: 1 })
         .to(heroText, { duration: durations[1], xPercent: 0, stagger: 0.1 })
         .call(() => selectAll('.hero .txt-anim').forEach(elem => elem.classList.remove("transparent")))
         .to(heroText, { duration: durations[1], xPercent: 110, stagger: 0.2 })
-        
+
     //Show alerts
     tl.add(alertAnim);
 
     return tl;
 }
+
+selectAll('[data-alert-btn]').forEach(elem => {
+    elem.addEventListener("click", () => {
+        new Alert({
+            head: 'Sorry',
+            msg: "The page you are looking for hasn't been built yet.<br>Thanks for the understanding",
+            type: 'none',
+            image: 'pro-smile.png'
+        });
+    })
+})
