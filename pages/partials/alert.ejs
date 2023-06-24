@@ -1,0 +1,25 @@
+<div class="alert-cont">
+    <div class="alert-box">
+        <% if (locals.alert?.alerts.length) { %>
+            <div class="alert">
+                <button class="alert-close"><i class="fa-solid fa-xmark"></i></button>
+                <div class="alert-text-box">
+                    <% for( let i=0; i < locals.alert?.alerts.length; i++ ) { %>
+                        <div class="alert-text">
+                            <h5><%= locals.alert?.alerts[i]?.head || '' %></h5>
+
+                            <h6><%- locals.alert?.alerts[i]?.msg || '' %></h6>
+
+                            <div class="alert-action"><%- locals.alert?.alerts[i]?.action || '' %></div>
+                        </div>
+                    <% } %>
+                </div>
+                <div class="alert-img-box">
+                    <div class="alert-img">
+                        <img src="/images/avatars/<%= locals.alert?.image || 'default.png' %>" alt="alert" draggable="false">
+                    </div>
+                </div>
+            </div>
+        <% } %>
+    </div>
+</div>

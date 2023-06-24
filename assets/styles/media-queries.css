@@ -50,6 +50,51 @@
     .row {
         flex-wrap: wrap;
     }
+    
+    .alert-box {
+        background-color: var(--color-dark);
+        color: var(--color-light);
+    }
+
+    .alert {
+        min-height: 200px;
+    }
+
+    .alert-text-box {
+        position: relative;
+        z-index: 2;
+    }
+
+    .alert-img-box {
+        position: absolute;
+        bottom: 0;
+        right: 10px;
+        opacity: 0.6;
+    }
+
+    .alert-img {
+        background-color: transparent;
+    }
+
+    .alert-text h5 {
+        font-size: 1.5em;
+    }
+    
+    .alert-text h6 {
+        font-size: .8em;
+    }
+    
+    .alert-text a {
+        color: pink;
+    }
+
+    .alert-action a,
+    .alert-action button {
+        background-color: var(--color-light);
+        color: var(--color-dark);
+        font-weight: 500;
+        padding: 12px 18px;
+    }
 }
 
 @media (max-width: 450px) {

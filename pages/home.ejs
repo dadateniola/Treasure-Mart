@@ -6,10 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Treasure Mart</title>
     <%- include('partials/head') %>
-        <link rel="stylesheet" href="/styles/home.css">
-
-        <!-- Changing scripts -->
-        <script defer src="/scripts/home.js"></script>
+    <link rel="stylesheet" href="/styles/home.css">
 </head>
 
 <body data-barba="wrapper">
@@ -19,6 +16,8 @@
             <div class="custom-loader"></div>
         </div>
     </div>
+
+    <%- include('partials/alert') %>
 
     <div class="container" data-scroll-container>
         <main data-barba="container" data-namespace="home">
@@ -231,6 +230,10 @@
                     </div>
                 </div>
             </section>
+
+            <!-- Changing scripts -->
+            <script defer src="/scripts/home.js"></script>
+            <script defer src="/scripts/barba.js"></script>
         </main>
     </div>
 

@@ -91,6 +91,7 @@ body {
     z-index: 800;
     pointer-events: none;
     background: transparent;
+    opacity: 0;
 }
 
 .loading-screen {
@@ -104,6 +105,107 @@ body {
 
 .loading-screen.on {
     background: linear-gradient(180deg, #BFBEC6 0%, #CCCBD1 13.54%, #D6D5DB 24.48%, #D4D3D9 52.6%, #D2D0D7 64.58%, #CECBD2 86.46%);
+}
+
+/*Alert box*/
+.alert-cont {
+    padding: 0 20px 20px 0;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    max-width: calc(100% - 20px);
+    z-index: 100;
+}
+
+.alert-box {
+    background-color: #fff;
+}
+
+.alert {
+    position: relative;
+    padding: 20px;
+    display: flex;
+    gap: 20px;
+    box-shadow: rgba(161, 161, 161, 0.2) 0px 4px 24px;
+}
+
+.alert-close {
+    padding: 0;
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    right: 0;
+    top: 0;
+    transform: translate(35%, -35%);
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+}
+
+.alert-text-box {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.alert-text {
+    max-width: 20em;
+}
+
+.alert-text h5 {
+    font-size: 2em;
+}
+
+.alert-text h6 {
+    font-size: .7em;
+    font-weight: 500;
+}
+
+.alert-text a {
+    font-size: 1em;
+    color: var(--red);
+    text-transform: capitalize;
+}
+
+.alert-action a,
+.alert-action button {
+    display: inline-block;
+    margin: 15px 0;
+    padding: 13px 35px;
+    background-color: var(--color-dark);
+    color: var(--color-light);
+    border: none;
+    font-size: .7em;
+    font-weight: 300;
+    line-height: 1;
+    font-family: 'poppins', sans-serif;
+    text-transform: capitalize;
+}
+
+.alert-action a {
+    font-size: .8em;
+}
+
+.alert-img-box {
+    display: flex;
+    align-items: end;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.alert-img {
+    padding-left: 20px;
+    height: 200px;
+    background-color: var(--color-dark);
+}
+
+.alert-img img {
+    position: relative;
+    transform: translateY(-50px);
+    height: 250px;
 }
 
 /*Loader*/

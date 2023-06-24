@@ -7,6 +7,27 @@ const newestImages = selectAll('.newest-images img');
 const navBefore = select('.newest-nav-before');
 const navAfter = select('.newest-nav-after');
 
+var activeSlider = 0;
+var start = parseInt(getComputedStyle(select(':root')).getPropertyValue('--new-span-height'), 10);
+var timer = 0;
+
+//changes active slider
+const changeActiveSlider = () => ((activeSlider + 1) > newestImages.length) ? activeSlider = 1 : activeSlider++;
+
+//changes active image
+const attachActiveImg = () => {
+    let clone = newestImages[(((activeSlider - 1) < 0) ? 0 : (activeSlider - 1))].cloneNode(true)
+    newestImgBox.append(clone)
+    gsap.set(clone, { scale: 1.2, opacity: 0 })
+};
+
+//resets all sliders
+const resetSliders = () => {
+    let tl = gsap.timeline();
+    tl.call(() => selectAll('.newest-nav-slider').forEach(elem => elem.children[0].remove()))
+    tl.set('.newest-nav-slider', { duration: 0, y: 0 })
+}
+
 
 //--------------------------------------------------------
 //Setup bars for page animations
@@ -82,27 +103,6 @@ function scrollAnimations() {
 
 
 
-
-var activeSlider = 0;
-var start = parseInt(getComputedStyle(select(':root')).getPropertyValue('--new-span-height'), 10);
-var timer = 0;
-
-//changes active slider
-const changeActiveSlider = () => ((activeSlider + 1) > newestImages.length) ? activeSlider = 1 : activeSlider++;
-
-//changes active image
-const attachActiveImg = () => {
-    let clone = newestImages[(((activeSlider - 1) < 0) ? 0 : (activeSlider - 1))].cloneNode(true)
-    newestImgBox.append(clone)
-    gsap.set(clone, { scale: 1.2, opacity: 0 })
-};
-
-//resets all sliders
-const resetSliders = () => {
-    let tl = gsap.timeline();
-    tl.call(() => selectAll('.newest-nav-slider').forEach(elem => elem.children[0].remove()))
-    tl.set('.newest-nav-slider', { duration: 0, y: 0 })
-}
 
 //Newest Functions
 function setupNewest() {
@@ -190,6 +190,9 @@ function changeNewest() {
 }
 
 
+
+//Necessary in all pages
+//----------------------------------------
 function setupPage() {
     setBars(5);
     setupText();
@@ -203,29 +206,16 @@ function pageTransition(params = {}) {
     const durations = [.8, .5]
 
     if (reloaded) {
-        tl.call(() => select('.loading-screen').classList.remove('on'))
-            .to('.custom-loader', { duration: durations[0], opacity: 0, delay: 1 })
-            .to(gsap.utils.shuffle(oddBars), { duration: durations[0], xPercent: 100, ease: "Power4.easeIn", delay: .5, stagger: 0.2 })
-            .to(gsap.utils.shuffle(evenBars), { duration: durations[0], xPercent: -100, ease: "Power4.easeIn", stagger: 0.2 }, "<")
-            .call(() => scroller.scrollTo(0))
+        tl
+            // .call(() => select('.loading-screen').classList.remove('on'))
+            // .to('.custom-loader', { duration: durations[0], opacity: 0, delay: 1 })
+            // .to(gsap.utils.shuffle(oddBars), { duration: durations[0], xPercent: 100, ease: "Power4.easeIn", delay: .5, stagger: 0.2 })
+            // .to(gsap.utils.shuffle(evenBars), { duration: durations[0], xPercent: -100, ease: "Power4.easeIn", stagger: 0.2 }, "<")
+            // .call(() => scroller.scrollTo(0))
             .fromTo('.hero-img img', { scale: 1.5, opacity: 0 }, { duration: durations[1], scale: 1, opacity: 1 })
             .to('.start-anim span', { duration: durations[1], xPercent: 0, stagger: 0.1 })
             .call(() => document.querySelectorAll('.start-anim').forEach(elem => elem.classList.remove("transparent")))
             .to('.start-anim span', { duration: durations[1], xPercent: 110, stagger: 0.2 })
     }
 }
-
-//Initialize barba
-barba.init({
-    sync: true,
-
-    transitions: [
-        {
-            name: 'default',
-            once() {
-                setupPage();
-                pageTransition({ reloaded: true });
-            }
-        }
-    ]
-})
+//----------------------------------------
