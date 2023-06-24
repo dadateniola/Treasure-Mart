@@ -91,6 +91,7 @@ body {
     z-index: 800;
     pointer-events: none;
     background: transparent;
+    /* opacity: 0; */
 }
 
 .loading-screen {
@@ -138,6 +139,7 @@ body {
     align-items: center;
     justify-content: center;
     z-index: 2;
+    cursor: pointer;
 }
 
 .alert-text-box {
@@ -308,6 +310,7 @@ button {
     color: var(--color-light);
     border: none;
     font-size: .9em;
+    cursor: pointer;
 }
 
 .full {

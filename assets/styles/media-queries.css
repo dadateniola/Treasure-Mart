@@ -51,12 +51,9 @@
         flex-wrap: wrap;
     }
     
-    .alert-box {
+    .alert {
         background-color: var(--color-dark);
         color: var(--color-light);
-    }
-
-    .alert {
         min-height: 200px;
     }
 

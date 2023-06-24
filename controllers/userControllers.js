@@ -38,7 +38,7 @@ const showHomePage = async (req, res) => {
             head: 'Hello !!',
             msg: 'Welcome to Treasure Mart and thank you for testing my website. To see more sites like this check my <a href="https://github.com/emmy13" target="_blank">github</a>\n',
             type: 'btn',
-            txt: 'Help find a product',
+            txt: 'login',
             img: 'happy'
         });
 
