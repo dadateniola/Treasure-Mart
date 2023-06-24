@@ -6,9 +6,9 @@
                 <div class="alert-text-box">
                     <% for( let i=0; i < locals.alert?.alerts.length; i++ ) { %>
                         <div class="alert-text">
-                            <h5><%= locals.alert?.alerts[i]?.head || '' %></h5>
+                            <h5 class="txt-anim"><%= locals.alert?.alerts[i]?.head || '' %></h5>
 
-                            <h6><%- locals.alert?.alerts[i]?.msg || '' %></h6>
+                            <h6 class="txt-anim"><%- locals.alert?.alerts[i]?.msg || '' %></h6>
 
                             <div class="alert-action"><%- locals.alert?.alerts[i]?.action || '' %></div>
                         </div>

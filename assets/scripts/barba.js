@@ -1,3 +1,4 @@
+//This page controls the animations to be rendered on different actions of the page
 //Initialize barba
 barba.init({
     sync: true,
@@ -6,9 +7,17 @@ barba.init({
         {
             name: 'default',
             once() {
-                setupPage();
-                pageTransition({ reloaded: true });
+                //Run page animation
+                const onceAnim = onceAnimation();
+                onceAnim.play();
+            },
+
+            enter() {
+                //Run page animation
+                const onceAnim = onceAnimation();
+                onceAnim.play();
             }
+            
         }
     ]
 })

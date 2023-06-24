@@ -91,7 +91,6 @@ body {
     z-index: 800;
     pointer-events: none;
     background: transparent;
-    opacity: 0;
 }
 
 .loading-screen {
@@ -117,16 +116,13 @@ body {
     z-index: 100;
 }
 
-.alert-box {
-    background-color: #fff;
-}
-
 .alert {
     position: relative;
     padding: 20px;
     display: flex;
     gap: 20px;
     box-shadow: rgba(161, 161, 161, 0.2) 0px 4px 24px;
+    background-color: #fff;
 }
 
 .alert-close {
@@ -382,6 +378,7 @@ button {
     gap: 15px;
 }
 
+.char-anim,
 .start-anim,
 .txt-anim {
     position: relative;
@@ -390,6 +387,7 @@ button {
     overflow: hidden;
 }
 
+.char-anim span,
 .start-anim span,
 .txt-anim span {
     position: absolute;
