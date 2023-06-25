@@ -279,3 +279,13 @@ function showAlerts() {
     return tl;
 
 }
+
+//Dark mode
+function darkMode() {
+    const heroImg = select('.hero-img img')
+    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+    if(prefersDark) heroImg.src = '/images/model-dark.png';
+}
+
+// darkMode();

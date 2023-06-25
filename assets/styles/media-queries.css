@@ -1,3 +1,13 @@
+/* Dark mode styles */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --color-light: #000;
+        --color-dark: #fff;
+        --text-gray: #a1a1a1;
+        --text-bright: #ededed;
+    }
+}
+
 @media (max-width: 1100px) {
     :root {
         --page-padding: 50px;

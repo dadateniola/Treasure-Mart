@@ -2,7 +2,7 @@
     padding-top: 15vh;
     width: 100%;
     height: calc(100vh + ((80/100) * var(--ver-box-height)));
-    background: linear-gradient(180deg, #BFBEC6 0%, #CCCBD1 13.54%, #D6D5DB 24.48%, #D4D3D9 52.6%, #D2D0D7 64.58%, #CECBD2 86.46%);
+    background: var(--bg-gradient);
 }
 
 .hero-img {
@@ -81,7 +81,7 @@
 .newest-nav hr {
     width: 100px;
     height: 0;
-    border: 2px solid var(--color-light);
+    border: 2px solid white;
 }
 
 .newest-nav-box {
@@ -98,7 +98,7 @@
     width: calc(var(--new-span-height) - 10px);
     height: var(--new-span-height);
     font-size: 20px;
-    color: var(--color-light);
+    color: white;
 }
 
 .newest-nav-box.active span {
@@ -245,6 +245,7 @@
 
 .newsletter-text {
     max-width: 300px;
+    color: var(--color-dark);
 }
 
 .newsletter-box {

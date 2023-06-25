@@ -12,6 +12,7 @@
 
 /* Setting root variables */
 :root {
+    --bg-gradient: linear-gradient(180deg, #BFBEC6 0%, #CCCBD1 13.54%, #D6D5DB 24.48%, #D4D3D9 52.6%, #D2D0D7 64.58%, #CECBD2 86.46%);
     --new-span-height: 35px;
     --big-gap: 10vw;
     --small-gap: 20px;
@@ -24,7 +25,7 @@
     --color-light: #ffffff;
     --color-dark: #000000;
     --text-gray: #5c5c5c;
-    --text-bright: rgb(190, 190, 190);
+    --text-bright: #bebebe;
     --red: #BE1614;
 }
 
@@ -68,6 +69,7 @@ span[data-invisible] {
 body {
     font-family: 'Poppins', sans-serif;
     font-weight: 500;
+    background-color: var(--color-light);
 }
 
 .page {
@@ -122,7 +124,7 @@ body {
     display: flex;
     gap: 20px;
     box-shadow: rgba(161, 161, 161, 0.2) 0px 4px 24px;
-    background-color: #fff;
+    background-color: var(--color-light);
     color: var(--color-dark);
     transform: translateY(120%);
     opacity: 0;
@@ -302,9 +304,14 @@ span {
 
 input {
     background-color: var(--color-light);
-    border: 3px solid black;
+    border: 3px solid var(--color-dark);
     padding: 13px 10px 13px 18px;
     font-size: .9em;
+    color: var(--color-dark);
+}
+
+input:focus {
+    outline: none;
 }
 
 button {
