@@ -9,6 +9,11 @@ var scroller;
 var evenBars = [];
 var oddBars = [];
 const durations = [.8, .5];
+const barsColor = getComputedStyle(select(':root')).getPropertyValue('--red');
+
+//Disables all buttons in the page
+const disableBtns = (condition) => selectAll('button').forEach(elem => (condition) ? elem.disabled = true : elem.disabled = false);
+
 
 //Register Scrolltrigger
 gsap.registerPlugin(ScrollTrigger);
@@ -31,6 +36,7 @@ class SetupDocument {
         this.setupDependencies();
         this.setupBars(this.bars);
         this.constructor.setupText();
+        this.setupNavbar();
         this.scrollAnimations();
     }
 
@@ -50,6 +56,9 @@ class SetupDocument {
             elem.setAttribute('data-scroll-speed', '-0.15');
             elem.setAttribute('data-scroll-position', 'top');
         })
+
+        //Set menu position
+        // gsap.set('.navbar-menu', { xPercent: 110 })
     }
 
     setupBars(num = 1) {
@@ -70,7 +79,7 @@ class SetupDocument {
         })
 
         const text = (parent) ? selectAllWith(parent, '.txt-anim') : selectAll(".txt-anim");
-        
+
         //attach spans to the texts then give it the same color as the text
         text.forEach(elem => {
             const color = getComputedStyle(elem).getPropertyValue("color");
@@ -78,9 +87,76 @@ class SetupDocument {
 
             span.style.backgroundColor = `${(color == "") ? 'black' : color}`;
             gsap.set(span, { xPercent: -110, color: 'transparent' })
-            
+
             elem.classList.add("transparent")
             elem.append(span);
+        })
+    }
+
+    setupNavbar() {
+        selectAll('.navbar nav .txt-anim, .menu-close').forEach(elem => {
+            elem.classList.remove('transparent');
+
+            elem.addEventListener("mouseenter", function () {
+                const span = selectWith(this, 'span');
+
+                this.style.color = 'black';
+
+                gsap.to(span, { xPercent: 0 })
+            })
+
+            elem.addEventListener("mouseleave", function () {
+                const tl = gsap.timeline();
+                const span = selectWith(this, 'span');
+
+                this.style.color = 'white';
+
+                tl.to(span, { xPercent: 110 })
+                    .set(span, { xPercent: -110 })
+            })
+        })
+
+        selectAll('.navbar li button').forEach(elem => {
+            elem.addEventListener("click", function () {
+                disableBtns(true);
+                SetupDocument.changeBarsColor('white');
+
+                const tl = gsap.timeline();
+                const barsOption = {
+                    set: 100,
+                    type: 'one',
+                }
+
+                const barsAnim = barsAnimation(barsOption);
+
+                tl.to('.navbar li button', { scale: 0 })
+                    .set('.navbar-menu', { xPercent: 0 })
+                    .add(barsAnim)
+                    .to('.menu-close', { scale: 1 })
+                    .call(() => disableBtns())
+
+                tl.play();
+            })
+        })
+
+        select('.menu-close').addEventListener("click", function () {
+            disableBtns(true);
+
+            const tl = gsap.timeline();
+            const barsOption = {
+                type: 'one',
+                direction: -100
+            }
+
+            const barsAnim = barsAnimation(barsOption);
+
+            tl.to(this, { scale: 0 })
+                .set('.navbar-menu', { xPercent: 110 })
+                .add(barsAnim)
+                .to('.navbar li button', { scale: 1 })
+                .call(() => disableBtns())
+
+            tl.play();
         })
     }
 
@@ -99,6 +175,11 @@ class SetupDocument {
                 start: 'top 80%',
             })
         })
+    }
+
+    static changeBarsColor(color = undefined) {
+        if (!color) color = barsColor;
+        selectAll('.bars').forEach(elem => elem.style.backgroundColor = color);
     }
 }
 
@@ -185,7 +266,7 @@ class Alert {
     }
 
     getAction(params = {}) {
-        if(params?.type == 'none') return [];
+        if (params?.type == 'none') return [];
 
         const text = (params?.text) ? params?.text : 'No message';
         const type = (params?.type == 'btn') ? true : false;
@@ -246,14 +327,41 @@ class Alert {
 }
 
 //Animation functions
-function barsAnimation(condition = true) {
+//Syntax: { set, start(t/f), type, direction, skip(t/f) }
+function barsAnimation(params = {}) {
     const tl = gsap.timeline();
 
-    tl.call(() => select('.loading-screen').classList.remove('on'))
-        .to('.custom-loader', { duration: (condition) ? durations[0] : 0, opacity: 0, delay: (condition) ? 1 : 0 })
-        .to(gsap.utils.shuffle(oddBars), { duration: durations[0], xPercent: 100, ease: "Power4.easeIn", delay: .5, stagger: 0.2 })
-        .to(gsap.utils.shuffle(evenBars), { duration: durations[0], xPercent: -100, ease: "Power4.easeIn", stagger: 0.2 }, "<")
-    if (condition) tl.call(() => scroller.scrollTo(0))
+    //Set original position of the bars if needed
+    if (params?.set) {
+        const position = params?.set || 0;
+
+        tl.set('.bars', { xPercent: position })
+    }
+
+    //Check if start animation is needed
+    if (params?.start) {
+        tl.call(() => select('.loading-screen').classList.remove('on'))
+            .to('.custom-loader', { duration: (params?.skip) ? durations[0] : 0, opacity: 0, delay: (params?.skip) ? 1 : 0 })
+
+    }
+
+    //Set the type of animation
+    if (params?.type == 'one') {
+        const direction = params?.direction || 0;
+
+        tl.to('.bars', { duration: durations[0], xPercent: direction, ease: "Power4.easeIn", stagger: 0.2 })
+    } else if (params?.type == 'both') {
+        const direction = params?.direction || 0;
+
+        tl.to(gsap.utils.shuffle(oddBars), { duration: durations[0], xPercent: direction, ease: "Power4.easeIn", delay: .5, stagger: 0.2 })
+            .to(gsap.utils.shuffle(evenBars), { duration: durations[0], xPercent: -(direction), ease: "Power4.easeIn", stagger: 0.2 }, "<")
+    } else {
+        const direction = params?.direction || 0;
+
+        tl.to(gsap.utils.shuffle([...oddBars, ...evenBars]), { duration: durations[0], xPercent: direction, ease: "Power4.easeIn", stagger: 0.2 })
+    }
+
+    if (params?.skip) tl.call(() => scroller.scrollTo(0))
 
     return tl;
 }
@@ -279,13 +387,3 @@ function showAlerts() {
     return tl;
 
 }
-
-//Dark mode
-function darkMode() {
-    const heroImg = select('.hero-img img')
-    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-
-    if(prefersDark) heroImg.src = '/images/model-dark.png';
-}
-
-// darkMode();

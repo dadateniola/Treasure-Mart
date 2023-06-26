@@ -3,6 +3,11 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@700&display=swap');
 
+@font-face {
+    font-family: 'ver';
+    src: url(/font/Vercetti-Regular.ttf);
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -28,6 +33,17 @@
     --text-bright: #bebebe;
     --red: #BE1614;
 }
+
+/*
+    Z-INDEX RANKINGS: 
+    ----------------------------
+    .navbar-menu(400)
+    .menu-close(400)
+    .loading-container(300)
+    .navbar(200)
+    .alert-cont(100)
+    ----------------------------
+*/
 
 /*Set scroll bars*/
 ::-webkit-scrollbar {
@@ -90,9 +106,11 @@ body {
     width: 100%;
     height: 100vh;
     overflow: hidden;
-    z-index: 800;
+    z-index: 300;
     pointer-events: none;
     background: transparent;
+
+    /* opacity: 0; */
 }
 
 .loading-screen {
@@ -211,6 +229,76 @@ body {
     height: 250px;
 }
 
+/* Nabvar */
+.navbar nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 200;
+    padding: 20px;
+}
+
+.navbar nav ul {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.menu-close,
+.navbar ul li button {
+    position: relative;
+    padding: 0;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+}
+
+.menu-close i,
+.navbar ul li button i {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+}
+
+.menu-close {
+    position: fixed !important;
+    top: 20px;
+    right: 20px;
+    z-index: 400;
+    transform: scale(0);
+}
+
+.navbar-menu {
+    padding: 0 10vw;
+    position: fixed;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    width: 100%;
+    max-height: 80vh;
+    z-index: 400;
+    /* opacity: 0; */
+}
+
+.navbar-menu-text {
+    width: 100%;
+}
+
+.navbar-menu-text h5 {
+    margin: 20px 0;
+    text-transform: capitalize;
+}
+
+.navbar-menu-text a {
+    font-family: 'ver', sans-serif;
+    font-size: clamp(2em, 8vw, 100px);
+    color: black;
+}
+
 /*Loader*/
 .bars {
     width: 100%;
@@ -282,6 +370,10 @@ a {
     text-decoration: none;
     font-size: 18px;
     color: var(--text-bright);
+}
+
+ul {
+    list-style: none;
 }
 
 span {

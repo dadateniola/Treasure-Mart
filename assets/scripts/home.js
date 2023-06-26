@@ -148,15 +148,21 @@ new Setup();
 function onceAnimation(condition = true) {
     const tl = gsap.timeline();
     const heroText = selectAll('.hero .txt-anim span');
+    const barsOptions = {
+        start: true,
+        type: 'both',
+        direction: 100,
+        skip: true
+    }
 
-    const barsAnim = barsAnimation(condition);
+    // const barsAnim = barsAnimation(barsOptions);
     const alertAnim = showAlerts();
 
-    tl.add(barsAnim)
-        .fromTo('.hero-img img', { scale: 1.5, opacity: 0 }, { duration: durations[1], scale: 1, opacity: 1 })
-        .to(heroText, { duration: durations[1], xPercent: 0, stagger: 0.1 })
-        .call(() => selectAll('.hero .txt-anim').forEach(elem => elem.classList.remove("transparent")))
-        .to(heroText, { duration: durations[1], xPercent: 110, stagger: 0.2 })
+    // tl.add(barsAnim)
+    //     .fromTo('.hero-img img', { scale: 1.5, opacity: 0 }, { duration: durations[1], scale: 1, opacity: 1 })
+    //     .to(heroText, { duration: durations[1], xPercent: 0, stagger: 0.1 })
+    //     .call(() => selectAll('.hero .txt-anim').forEach(elem => elem.classList.remove("transparent")))
+    //     .to(heroText, { duration: durations[1], xPercent: 110, stagger: 0.2 })
 
     //Show alerts
     tl.add(alertAnim);
