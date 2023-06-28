@@ -109,8 +109,6 @@ body {
     z-index: 300;
     pointer-events: none;
     background: transparent;
-
-    /* opacity: 0; */
 }
 
 .loading-screen {
@@ -255,17 +253,8 @@ body {
     border: 2px solid transparent;
 }
 
-.menu-close i,
-.navbar ul li button i {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 2;
-}
-
 .menu-close {
-    position: fixed !important;
+    position: fixed;
     top: 20px;
     right: 20px;
     z-index: 400;
@@ -281,7 +270,7 @@ body {
     width: 100%;
     max-height: 80vh;
     z-index: 400;
-    /* opacity: 0; */
+    opacity: 0;
 }
 
 .navbar-menu-text {
@@ -289,14 +278,19 @@ body {
 }
 
 .navbar-menu-text h5 {
-    margin: 20px 0;
+    margin: 7vh 0;
     text-transform: capitalize;
 }
 
 .navbar-menu-text a {
     font-family: 'ver', sans-serif;
-    font-size: clamp(2em, 8vw, 100px);
+    font-size: clamp(2.5em, 8vw, 100px);
     color: black;
+    font-weight: 500;
+}
+
+.navbar-menu-text a:hover {
+    color: var(--red);
 }
 
 /*Loader*/

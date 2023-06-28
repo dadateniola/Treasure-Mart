@@ -12,7 +12,7 @@ const durations = [.8, .5];
 const barsColor = getComputedStyle(select(':root')).getPropertyValue('--red');
 
 //Disables all buttons in the page
-const disableBtns = (condition) => selectAll('button').forEach(elem => (condition) ? elem.disabled = true : elem.disabled = false);
+const disableBtns = (condition = false) => selectAll('button').forEach(elem => (condition) ? elem.disabled = true : elem.disabled = false);
 
 
 //Register Scrolltrigger
@@ -58,7 +58,7 @@ class SetupDocument {
         })
 
         //Set menu position
-        // gsap.set('.navbar-menu', { xPercent: 110 })
+        gsap.set('.navbar-menu', { xPercent: 110 })
     }
 
     setupBars(num = 1) {
@@ -94,32 +94,30 @@ class SetupDocument {
     }
 
     setupNavbar() {
-        selectAll('.navbar nav .txt-anim, .menu-close').forEach(elem => {
+        selectAll('.navbar button').forEach(elem => {
             elem.classList.remove('transparent');
 
             elem.addEventListener("mouseenter", function () {
-                const span = selectWith(this, 'span');
+                const icon = selectWith(this, 'i');
 
-                this.style.color = 'black';
-
-                gsap.to(span, { xPercent: 0 })
+                gsap.to(icon, { duration: 0.2, scale: 1.1 })
             })
 
             elem.addEventListener("mouseleave", function () {
-                const tl = gsap.timeline();
-                const span = selectWith(this, 'span');
+                const icon = selectWith(this, 'i');
 
-                this.style.color = 'white';
-
-                tl.to(span, { xPercent: 110 })
-                    .set(span, { xPercent: -110 })
+                gsap.to(icon, { duration: 0.2, scale: 1 })
             })
         })
 
         selectAll('.navbar li button').forEach(elem => {
             elem.addEventListener("click", function () {
+                const navbarMenu = select('.navbar-menu');
+                const spans = selectAllWith(navbarMenu, '.txt-anim span');
+
                 disableBtns(true);
                 SetupDocument.changeBarsColor('white');
+                SetupDocument.resetText(navbarMenu)
 
                 const tl = gsap.timeline();
                 const barsOption = {
@@ -129,10 +127,13 @@ class SetupDocument {
 
                 const barsAnim = barsAnimation(barsOption);
 
-                tl.to('.navbar li button', { scale: 0 })
-                    .set('.navbar-menu', { xPercent: 0 })
+                tl.set(navbarMenu, { xPercent: 0, opacity: 1 })
+                    .to('.navbar li button', { scale: 0 })
                     .add(barsAnim)
                     .to('.menu-close', { scale: 1 })
+                    .to(spans, { xPercent: 0, stagger: 0.1 })
+                    .call(() => selectAllWith(navbarMenu, '.txt-anim').forEach(e => e.classList.remove("transparent")))
+                    .to(spans, { xPercent: 110, stagger: 0.2 })
                     .call(() => disableBtns())
 
                 tl.play();
@@ -142,6 +143,7 @@ class SetupDocument {
         select('.menu-close').addEventListener("click", function () {
             disableBtns(true);
 
+            const navbarMenu = select('.navbar-menu');
             const tl = gsap.timeline();
             const barsOption = {
                 type: 'one',
@@ -151,12 +153,24 @@ class SetupDocument {
             const barsAnim = barsAnimation(barsOption);
 
             tl.to(this, { scale: 0 })
-                .set('.navbar-menu', { xPercent: 110 })
+                .to(navbarMenu, { opacity: 0 })
+                .set(navbarMenu, { xPercent: 110 })
                 .add(barsAnim)
                 .to('.navbar li button', { scale: 1 })
                 .call(() => disableBtns())
 
             tl.play();
+        })
+    }
+
+    static resetText(parent = false) {
+        if(!parent) return;
+        
+        selectAllWith(parent, '.txt-anim').forEach(elem => {
+            const span = selectAllWith(elem, 'span');
+
+            elem.classList.add('transparent');
+            gsap.set(span, { xPercent: -110, color: 'transparent' })            
         })
     }
 
