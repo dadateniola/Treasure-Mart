@@ -51,4 +51,18 @@ const showHomePage = async (req, res) => {
     }
 }
 
-module.exports = { showHomePage };
+const showLoginPage = async (req, res) => {
+    await req.alert({
+        head: 'Hi🙌',
+        msg: 'Lets gets to know eachother, we would love to see how far we can serve you.\n',
+        type: 'none',
+        image: 'happy'
+    });
+    res.render('login');
+}
+
+const showSignUpPage = (req, res) => {
+    res.render('signup');
+}
+
+module.exports = { showHomePage, showLoginPage, showSignUpPage };

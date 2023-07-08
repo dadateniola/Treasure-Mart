@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <%- include('partials/head') %>
+    <link rel="stylesheet" href="/styles/sign.css">
+</head>
+<body data-barba="wrapper">
+    
+    <%- include('partials/loader') %>
+    <%- include('partials/alert') %>
+    <%- include('partials/navbar') %>
+
+    <div class="container">
+        <main data-barba="container" data-barba-namespace="login" class="page-login">
+            <section class="full-pg row">
+                <div class="full-side full-flex">
+                    <div class="form-box">
+                        <h2>Login</h2>
+                        <p>Continue to enjoy our services by filing the form.</p>
+                        <form>
+                           <div class="form-group">
+                                <label for="email">email:</label>
+                                <input type="text" name="email" id="email">
+                           </div> 
+                           <div class="form-group">
+                                <label for="pswd">password:</label>
+                                <input type="text" name="pswd" id="pswd">
+                           </div>
+                           <div class="form-group">
+                                <button>Login</button>
+                           </div>
+                        </form>
+                        <p>Don't have an account, <a href="/signup">Sign Up</a></p>
+                    </div>
+                </div>
+                <div class="full-side img-here">
+                    <img src="/images/sign/login.jpg" alt="image">
+                </div>
+            </section>
+            <!-- Changing scripts -->
+            <script src="/scripts/sign.js"></script>
+        </main>
+    </div>
+
+    <%- include('partials/foot') %>
+
+</body>
+</html>

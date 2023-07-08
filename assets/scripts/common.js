@@ -14,6 +14,11 @@ const barsColor = getComputedStyle(select(':root')).getPropertyValue('--red');
 //Disables all buttons in the page
 const disableBtns = (condition = false) => selectAll('button').forEach(elem => (condition) ? elem.disabled = true : elem.disabled = false);
 
+//Dom parser
+const parseDOM = (html) => {
+    const parser = new DOMParser;
+    return parser.parseFromString(html, 'text/html');
+}
 
 //Register Scrolltrigger
 gsap.registerPlugin(ScrollTrigger);
@@ -62,6 +67,9 @@ class SetupDocument {
     }
 
     setupBars(num = 1) {
+        const bars = selectAllWith(this.loadingScreen, '.bars')
+        num -= bars.length;
+
         for (let i = 0; i < num; i++) {
             let div = document.createElement("div");
 
@@ -82,6 +90,7 @@ class SetupDocument {
 
         //attach spans to the texts then give it the same color as the text
         text.forEach(elem => {
+            if (selectWith(elem, 'span')) return;
             const color = getComputedStyle(elem).getPropertyValue("color");
             const span = document.createElement("span");
 
@@ -112,12 +121,9 @@ class SetupDocument {
 
         selectAll('.navbar li button').forEach(elem => {
             elem.addEventListener("click", function () {
-                const navbarMenu = select('.navbar-menu');
-                const spans = selectAllWith(navbarMenu, '.txt-anim span');
-
                 disableBtns(true);
                 SetupDocument.changeBarsColor('white');
-                SetupDocument.resetText(navbarMenu)
+                SetupDocument.resetText(select('.navbar-menu'))
 
                 const tl = gsap.timeline();
                 const barsOption = {
@@ -126,14 +132,11 @@ class SetupDocument {
                 }
 
                 const barsAnim = barsAnimation(barsOption);
+                const navbarMenuAnim = SetupDocument.navbarMenuAnim();
 
-                tl.set(navbarMenu, { xPercent: 0, opacity: 1 })
-                    .to('.navbar li button', { scale: 0 })
+                tl.to('.navbar li button', { scale: 0 })
                     .add(barsAnim)
-                    .to('.menu-close', { scale: 1 })
-                    .to(spans, { xPercent: 0, stagger: 0.1 })
-                    .call(() => selectAllWith(navbarMenu, '.txt-anim').forEach(e => e.classList.remove("transparent")))
-                    .to(spans, { xPercent: 110, stagger: 0.2 })
+                    .add(navbarMenuAnim)
                     .call(() => disableBtns())
 
                 tl.play();
@@ -143,7 +146,6 @@ class SetupDocument {
         select('.menu-close').addEventListener("click", function () {
             disableBtns(true);
 
-            const navbarMenu = select('.navbar-menu');
             const tl = gsap.timeline();
             const barsOption = {
                 type: 'one',
@@ -151,12 +153,11 @@ class SetupDocument {
             }
 
             const barsAnim = barsAnimation(barsOption);
+            const navbarMenuAnim = SetupDocument.navbarMenuAnim(true);
 
-            tl.to(this, { scale: 0 })
-                .to(navbarMenu, { opacity: 0 })
-                .set(navbarMenu, { xPercent: 110 })
+            tl
+                .add(navbarMenuAnim)
                 .add(barsAnim)
-                .to('.navbar li button', { scale: 1 })
                 .call(() => disableBtns())
 
             tl.play();
@@ -164,13 +165,13 @@ class SetupDocument {
     }
 
     static resetText(parent = false) {
-        if(!parent) return;
-        
+        if (!parent) return;
+
         selectAllWith(parent, '.txt-anim').forEach(elem => {
             const span = selectAllWith(elem, 'span');
 
             elem.classList.add('transparent');
-            gsap.set(span, { xPercent: -110, color: 'transparent' })            
+            gsap.set(span, { xPercent: -110, color: 'transparent' })
         })
     }
 
@@ -195,10 +196,31 @@ class SetupDocument {
         if (!color) color = barsColor;
         selectAll('.bars').forEach(elem => elem.style.backgroundColor = color);
     }
-}
 
-//Setup document
-new SetupDocument();
+    static navbarMenuAnim(condition = false) {
+        const navbarMenu = select('.navbar-menu');
+        const spans = selectAllWith(navbarMenu, '.txt-anim span');
+        const tl = gsap.timeline();
+
+        if (condition) {
+            tl
+                .to(navbarMenu, { opacity: 0 })
+                .to('.menu-close', { scale: 0 }, '<')
+                .set(navbarMenu, { xPercent: 110 })
+                .to('.navbar li button', { scale: 1 })
+        } else {
+            tl
+                .set(navbarMenu, { xPercent: 0, opacity: 1 })
+                .call(() => SetupDocument.resetText(navbarMenu))
+                .to('.menu-close', { scale: 1 })
+                .to(spans, { xPercent: 0, stagger: 0.1 })
+                .call(() => selectAllWith(navbarMenu, '.txt-anim').forEach(e => e.classList.remove("transparent")))
+                .to(spans, { xPercent: 110, stagger: 0.2 })
+        }
+
+        return tl;
+    }
+}
 
 class Alert {
     constructor(params = {}) {
@@ -226,9 +248,6 @@ class Alert {
         //Add them to the timeline
         tl.add(closeAnim)
             .add(showAnim);
-
-        //Play the animation
-        tl.play();
     }
 
     createAlert() {
@@ -340,8 +359,212 @@ class Alert {
     }
 }
 
+//All page setups
+//-------------------------------------------------------------------
+
+//Homepage setup
+const newestTl = gsap.timeline();
+class Home {
+    constructor() {
+        this.newest = select('.newest');
+
+        //Initialize page setup
+        this.init();
+    }
+
+    init() {
+        //Newest slider parameters
+        this.newestImgBox = selectWith(this.newest, ".newest-img-box");
+        this.newestImages = selectAllWith(this.newest, '.newest-images img');
+        this.navBefore = selectWith(this.newest, '.newest-nav-before');
+        this.navAfter = selectWith(this.newest, '.newest-nav-after');
+
+        //Functional parameters
+        this.activeSlider = 0;
+        this.start = parseInt(getComputedStyle(select(':root')).getPropertyValue('--new-span-height'), 10);
+        this.timer = 0;
+
+        //changes active slider
+        this.changeActiveSlider = () => ((this.activeSlider + 1) > this.newestImages.length) ? this.activeSlider = 1 : this.activeSlider++;
+        //changes active image
+        this.attachActiveImg = () => {
+            if (!this.newestImages.length) return;
+            let clone = this.newestImages[(((this.activeSlider - 1) < 0) ? 0 : (this.activeSlider - 1))].cloneNode(true)
+            this.newestImgBox.append(clone);
+            gsap.set(clone, { scale: 1.2, opacity: 0 });
+        }
+        //reset sliders
+        this.resetSliders = () => {
+            let tl = gsap.timeline();
+            tl.call(() => selectAll('.newest-nav-slider').forEach(elem => elem.children[0].remove()))
+            tl.set('.newest-nav-slider', { duration: 0, y: 0 })
+        }
+
+        //Run setup
+        this.setupNewest();
+        this.startNewest();
+    }
+
+    setupNewest() {
+        if (!this.newestImages.length) return;
+
+        //add slider and slider container to the navs
+        for (let i = 0; i < this.newestImages.length; i++) {
+            let navBoxClone;
+
+            let navBox = document.createElement("span");
+            let navSlider = document.createElement("div");
+
+            navBox.classList.add("newest-nav-box");
+            navSlider.classList.add("newest-nav-slider");
+
+            navBox.appendChild(navSlider)
+            navBoxClone = navBox.cloneNode(true);
+
+            this.navBefore.append(navBox);
+            this.navAfter.append(navBoxClone);
+        }
+
+        //attach appropriate spans and images
+        this.attachNewestSpans();
+        this.attachActiveImg();
+    }
+
+    attachNewestSpans() {
+        const before = [];
+        const after = [];
+
+        selectAllWith(this.navBefore, '.newest-nav-slider').forEach(elem => before.push(elem));
+
+        selectAllWith(this.navAfter, '.newest-nav-slider').forEach(elem => after.push(elem));
+
+        //Reverse navs before to count like: '1,2,3', instead of '3,2,1'
+        before.reverse();
+
+        //attach spans based on the current active slider
+        //then attach invisible attribute to the ones not needed, then add to slider
+        before.forEach((elem, index) => {
+            let span = document.createElement("span");
+            let condition = (this.activeSlider - index <= 0);
+
+            span.innerHTML = condition ? '00' : `0${(this.activeSlider - index)}`;
+
+            condition ? span.setAttribute('data-invisible', '') : null;
+            (this.activeSlider - index == this.activeSlider) ? span.style.color = 'red' : null;
+
+            elem.append(span);
+        })
+
+        after.forEach((elem, index) => {
+            let span = document.createElement("span");
+            let condition = (this.activeSlider + (index + 1) > this.newestImages.length);
+
+            span.innerHTML = condition ? '00' : `0${(this.activeSlider + (index + 1))}`;
+            condition ? span.setAttribute('data-invisible', '') : null;
+
+            elem.append(span);
+        })
+    }
+
+    changeNewest() {
+        if (!this.newestImages.length) return;
+
+        //Change active slider and attch new spans under current ones
+        this.changeActiveSlider()
+        this.attachNewestSpans();
+
+        //Change image
+        this.attachActiveImg();
+
+        //Move the sliders and reset them after
+        newestTl.to(selectAllWith(this.newestImgBox, 'img'), { scale: 1, opacity: 1, delay: this.timer })
+            .to(selectAllWith(this.newest, '.newest-nav-slider'), { duration: 0.2, y: -(this.start), stagger: 0.2 })
+            .call(() => {
+                if (!this.timer) this.timer = 1;
+                this.newestImgBox.children[0].remove();
+                this.resetSliders();
+                this.changeNewest();
+            })
+    }
+
+    startNewest() {
+        const tl = gsap.timeline();
+
+        //Start slider animations
+        tl.call(() => {
+            //Start newest animation
+            this.changeNewest();
+        })
+
+        ScrollTrigger.create({
+            trigger: this.newest,
+            animation: tl,
+            start: 'top 50%',
+        })
+    }
+}
+
+//-------------------------------------------------------------------
+
 //Animation functions
 //Syntax: { set, start(t/f), type, direction, skip(t/f) }
+function onceAnim(condition = false) {
+    //Disable all buttons
+    disableBtns(true);
+
+    const tl = gsap.timeline();
+    const heroText = selectAll('.hero .txt-anim span');
+    const barsOptions = {
+        start: true,
+        type: 'both',
+        direction: 100,
+        skip: true
+    }
+
+    const barsAnim = barsAnimation(barsOptions);
+    const alertAnim = showAlerts();
+
+    tl.add(barsAnim)
+    if (condition) {
+        tl
+            .fromTo('.hero-img img', { scale: 1.5, opacity: 0 }, { duration: durations[1], scale: 1, opacity: 1 })
+            .to(heroText, { duration: durations[1], xPercent: 0, stagger: 0.1 })
+            .call(() => selectAll('.hero .txt-anim').forEach(elem => elem.classList.remove("transparent")))
+            .to(heroText, { duration: durations[1], xPercent: 110, stagger: 0.2 })
+    }
+    tl.call(() => disableBtns())
+
+    //Show alerts
+    if (!alertAnim) tl.add(alertAnim);
+
+    return tl;
+}
+
+function navAnim(condition = false) {
+    //Disable all buttons
+    disableBtns(true);
+
+    const tl = gsap.timeline();
+    const heroText = selectAll('.hero .txt-anim span');
+    const barsOptions = {
+        off: true,
+        type: 'one',
+        direction: -100,
+    }
+
+    const barsAnim = barsAnimation(barsOptions)
+
+    tl.add(barsAnim)
+    if (condition) {
+        tl
+            .fromTo('.hero-img img', { scale: 1.5, opacity: 0 }, { duration: durations[1], scale: 1, opacity: 1 })
+            .to(heroText, { duration: durations[1], xPercent: 0, stagger: 0.1 })
+            .call(() => selectAll('.hero .txt-anim').forEach(elem => elem.classList.remove("transparent")))
+            .to(heroText, { duration: durations[1], xPercent: 110, stagger: 0.2 })
+    }
+    tl.call(() => disableBtns())
+}
+
 function barsAnimation(params = {}) {
     const tl = gsap.timeline();
 
@@ -357,6 +580,10 @@ function barsAnimation(params = {}) {
         tl.call(() => select('.loading-screen').classList.remove('on'))
             .to('.custom-loader', { duration: (params?.skip) ? durations[0] : 0, opacity: 0, delay: (params?.skip) ? 1 : 0 })
 
+    }
+
+    if (params.off) {
+        tl.set('.custom-loader', { opacity: 0 })
     }
 
     //Set the type of animation
@@ -388,6 +615,8 @@ function showAlerts() {
     });
     const alert = select('.alert');
 
+    if (!alert) return null;
+
     const img = selectWith(alert, 'img');
     const span = selectAllWith(alert, '.txt-anim span')
 
@@ -399,5 +628,116 @@ function showAlerts() {
         .to(span, { xPercent: 110, stagger: 0.2 })
 
     return tl;
+
+}
+
+function delay(n) {
+    n = n || 2000;
+    return new Promise((done) => {
+        setTimeout(() => {
+            done();
+        }, n);
+    });
+}
+
+function leaveAnimation() {
+    //Disable all buttons
+    disableBtns(true);
+
+    const tl = gsap.timeline();
+
+    const navbarMenuAnim = SetupDocument.navbarMenuAnim(true);
+
+    tl.add(navbarMenuAnim)
+
+    return tl;
+}
+
+function signAnimOut(html) {
+    //Disable all buttons
+    disableBtns(true);
+
+    const tl = gsap.timeline();
+    const doc = parseDOM(html);
+    const fullSide = select('.full-side.img-here');
+    const img = selectWith(doc, '.full-side.img-here img');
+
+    img.classList.add('full', 'top');
+    fullSide.append(img);
+
+    tl
+        .call(() => {
+            selectAll('.full-side').forEach(e => e.classList.add('hidden'))
+            document.body.classList.add('hidden');
+        })
+        .to('.form-box h2, .form-box p, .form-box label, .form-box input, .form-box button', {
+            y: '-100vh',
+            duration: durations[0],
+            ease: 'Back.easeIn',
+            stagger: 0.1
+        })
+        .to(img, {
+            yPercent: -100,
+            duration: durations[0]
+        }, '<')
+
+    return tl;
+}
+
+function signAnimIn() {
+    //Disable all buttons
+    disableBtns(true);
+
+    const tl = gsap.timeline();
+
+    tl
+        .call(() => selectAll('.full-side').forEach(e => e.classList.add('hidden')))
+        .from('.form-box h2, .form-box p, .form-box label, .form-box input, .form-box button', {
+            y: '100vh',
+            duration: durations[0],
+            ease: 'Back.easeOut',
+            stagger: 0.1
+        })
+        .call(() => {
+            selectAll('.full-side').forEach(e => e.classList.remove('hidden'));
+            document.body.classList.remove('hidden');
+            disableBtns();
+        })
+
+    return tl;
+}
+
+//Setup the page
+function setupClass(data) {
+    const main = data.next.container;
+    const trigger = data.trigger;
+    const condition = (main.classList.contains('page-home'));
+
+    pageSetup();
+
+    if (condition) new Home();
+    else newestTl.kill();
+
+    if ((trigger instanceof Element) ? trigger.hasAttribute('data-nav') : null) {
+        navAnim(condition);
+    }
+    else onceAnim(condition);
+}
+
+function pageSetup() {
+    new SetupDocument();
+
+    selectAll('[data-alert-btn]').forEach(elem => {
+        elem.addEventListener("click", () => {
+            disableBtns(true);
+            new Alert({
+                head: 'Sorry',
+                msg: "The page you are looking for hasn't been built yet.<br>Thanks for the understanding",
+                type: 'none',
+                image: 'pro-smile.png'
+            });
+            disableBtns();
+        })
+    })
 
 }

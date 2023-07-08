@@ -22,6 +22,12 @@
     }
 }
 
+@media (max-width: 900px) {
+    .form-box {
+        width: 85%;
+    }
+}
+
 @media (max-width: 800px) {
     :root {
         --page-y-padding: 100px;
@@ -50,6 +56,48 @@
     .head h1 {
         margin-right: 10px;
     }
+}
+
+@media (max-width: 700px) {
+    .full-pg.row {
+        position: relative;
+        display: block;
+    }
+
+    .full-side {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+    }
+
+    .full-side:nth-child(1) {
+        z-index: 2;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .form-box h2 {
+        font-size: clamp(20px, 15vw, 4.5em);
+        color: white;
+        margin-bottom: .4em;
+    }
+
+    .form-box p {
+        color: var(--text-bright);
+    }   
+
+    .form-group {
+        margin-bottom: 25px;
+    }
+
+    .form-group label {
+        color: white;
+    }
+
+    /* .form-group input {
+        background-color: var(--text-gray);
+    } */
 }
 
 @media (max-width: 600px) {

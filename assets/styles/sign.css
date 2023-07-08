@@ -1,0 +1,14 @@
+main {
+    width: 100%;
+    min-height: 100vh;
+    background-color: var(--color-white);
+}
+
+.top {
+    transform: translateY(100%);
+}
+
+.hidden {
+    height: 100vh;
+    overflow: hidden;
+}

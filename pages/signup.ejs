@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <%- include('partials/head') %>
+    <link rel="stylesheet" href="/styles/sign.css">
+</head>
+<body data-barba="wrapper">
+    
+    <%- include('partials/loader') %>
+    <%- include('partials/alert') %>
+    <%- include('partials/navbar') %>
+
+    <div class="container">
+        <main data-barba="container" data-barba-namespace="signup" class="page-signup">
+            <section class="full-pg row">
+                <div class="full-side full-flex">
+                    <div class="form-box">
+                        <h2>Sign Up</h2>
+                        <p>Join our very special customer base.</p>
+                        <form>
+                           <div class="form-group">
+                                <label for="username">username:</label>
+                                <input type="text" name="username" id="username">
+                           </div> 
+                           <div class="form-group">
+                                <label for="email">email:</label>
+                                <input type="text" name="email" id="email">
+                           </div> 
+                           <div class="form-group">
+                                <label for="pswd">password:</label>
+                                <input type="text" name="pswd" id="pswd">
+                           </div>
+                           <div class="form-group">
+                                <button>Sign Up</button>
+                           </div>
+                           <p>Already have an account, <a href="/login">Login</a></p>
+                        </form>
+                    </div>
+                </div>
+                <div class="full-side img-here">
+                    <img src="/images/sign/signup.jpg" alt="image">
+                </div>
+            </section>
+            <!-- Changing scripts -->
+            <script src="/scripts/sign.js"></script>
+        </main>
+    </div>
+
+    <%- include('partials/foot') %>
+
+</body>
+</html>
