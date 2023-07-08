@@ -78,7 +78,7 @@
     }
 
     .form-box h2 {
-        font-size: clamp(20px, 15vw, 4.5em);
+        font-size: clamp(20px, 13vw, 4.5em);
         color: white;
         margin-bottom: .4em;
     }
@@ -170,6 +170,18 @@
 
     span {
         font-size: .8em;
+    }
+
+    .form-group input {
+        padding: 8px 10px;
+    }
+
+    .form-group label {
+        font-size: 0.8em;
+    }
+
+    .form-box p {
+        color: rgb(226, 226, 226);
     }
 }
 

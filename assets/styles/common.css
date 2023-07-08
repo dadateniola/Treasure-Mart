@@ -365,6 +365,7 @@ a {
     text-decoration: none;
     font-size: 18px;
     color: var(--text-bright);
+    cursor: pointer;
 }
 
 ul {
@@ -454,7 +455,7 @@ button {
 }
 
 .form-box a {
-    font-size: 1em;
+    font-size: 1.2em;
     color: var(--red);
 }
 

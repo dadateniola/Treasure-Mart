@@ -12,7 +12,29 @@ const durations = [.8, .5];
 const barsColor = getComputedStyle(select(':root')).getPropertyValue('--red');
 
 //Disables all buttons in the page
-const disableBtns = (condition = false) => selectAll('button').forEach(elem => (condition) ? elem.disabled = true : elem.disabled = false);
+const disableLinksAndBtns = (condition = false) => {
+    selectAll('a, button').forEach((element) => {
+        if (condition) {
+            element.setAttribute('disabled', 'true');
+
+            if (element.tagName === 'A') {
+                element.dataset.href = element.href;
+                element.removeAttribute('href');
+                element.addEventListener('click', preventDefault);
+            }
+        } else {
+            selectAll('a, button').forEach((element) => {
+                element.removeAttribute('disabled');
+
+                if (element.tagName === 'A') {
+                    element.setAttribute('href', element.dataset.href);
+                    element.removeEventListener('click', preventDefault);
+                }
+            });
+        }
+    });
+}
+const preventDefault = (event) => event.preventDefault();
 
 //Dom parser
 const parseDOM = (html) => {
@@ -121,7 +143,7 @@ class SetupDocument {
 
         selectAll('.navbar li button').forEach(elem => {
             elem.addEventListener("click", function () {
-                disableBtns(true);
+                disableLinksAndBtns(true);
                 SetupDocument.changeBarsColor('white');
                 SetupDocument.resetText(select('.navbar-menu'))
 
@@ -137,14 +159,14 @@ class SetupDocument {
                 tl.to('.navbar li button', { scale: 0 })
                     .add(barsAnim)
                     .add(navbarMenuAnim)
-                    .call(() => disableBtns())
+                    .call(() => disableLinksAndBtns())
 
                 tl.play();
             })
         })
 
         select('.menu-close').addEventListener("click", function () {
-            disableBtns(true);
+            disableLinksAndBtns(true);
 
             const tl = gsap.timeline();
             const barsOption = {
@@ -158,7 +180,7 @@ class SetupDocument {
             tl
                 .add(navbarMenuAnim)
                 .add(barsAnim)
-                .call(() => disableBtns())
+                .call(() => disableLinksAndBtns())
 
             tl.play();
         })
@@ -510,7 +532,7 @@ class Home {
 //Syntax: { set, start(t/f), type, direction, skip(t/f) }
 function onceAnim(condition = false) {
     //Disable all buttons
-    disableBtns(true);
+    disableLinksAndBtns(true);
 
     const tl = gsap.timeline();
     const heroText = selectAll('.hero .txt-anim span');
@@ -532,17 +554,17 @@ function onceAnim(condition = false) {
             .call(() => selectAll('.hero .txt-anim').forEach(elem => elem.classList.remove("transparent")))
             .to(heroText, { duration: durations[1], xPercent: 110, stagger: 0.2 })
     }
-    tl.call(() => disableBtns())
+    tl.call(() => disableLinksAndBtns())
 
     //Show alerts
-    if (!alertAnim) tl.add(alertAnim);
+    if (alertAnim) tl.add(alertAnim);
 
     return tl;
 }
 
 function navAnim(condition = false) {
     //Disable all buttons
-    disableBtns(true);
+    disableLinksAndBtns(true);
 
     const tl = gsap.timeline();
     const heroText = selectAll('.hero .txt-anim span');
@@ -562,7 +584,7 @@ function navAnim(condition = false) {
             .call(() => selectAll('.hero .txt-anim').forEach(elem => elem.classList.remove("transparent")))
             .to(heroText, { duration: durations[1], xPercent: 110, stagger: 0.2 })
     }
-    tl.call(() => disableBtns())
+    tl.call(() => disableLinksAndBtns())
 }
 
 function barsAnimation(params = {}) {
@@ -631,18 +653,9 @@ function showAlerts() {
 
 }
 
-function delay(n) {
-    n = n || 2000;
-    return new Promise((done) => {
-        setTimeout(() => {
-            done();
-        }, n);
-    });
-}
-
 function leaveAnimation() {
     //Disable all buttons
-    disableBtns(true);
+    disableLinksAndBtns(true);
 
     const tl = gsap.timeline();
 
@@ -655,7 +668,7 @@ function leaveAnimation() {
 
 function signAnimOut(html) {
     //Disable all buttons
-    disableBtns(true);
+    disableLinksAndBtns(true);
 
     const tl = gsap.timeline();
     const doc = parseDOM(html);
@@ -672,21 +685,21 @@ function signAnimOut(html) {
         })
         .to('.form-box h2, .form-box p, .form-box label, .form-box input, .form-box button', {
             y: '-100vh',
-            duration: durations[0],
-            ease: 'Back.easeIn',
+            duration: 0.6,
+            ease: 'Expo.easeIn',
             stagger: 0.1
         })
         .to(img, {
             yPercent: -100,
             duration: durations[0]
-        }, '<')
+        }, '-=0.7')
 
     return tl;
 }
 
 function signAnimIn() {
     //Disable all buttons
-    disableBtns(true);
+    disableLinksAndBtns(true);
 
     const tl = gsap.timeline();
 
@@ -694,14 +707,14 @@ function signAnimIn() {
         .call(() => selectAll('.full-side').forEach(e => e.classList.add('hidden')))
         .from('.form-box h2, .form-box p, .form-box label, .form-box input, .form-box button', {
             y: '100vh',
-            duration: durations[0],
-            ease: 'Back.easeOut',
+            duration: 0.6,
+            ease: 'Expo.easeOut',
             stagger: 0.1
         })
         .call(() => {
             selectAll('.full-side').forEach(e => e.classList.remove('hidden'));
             document.body.classList.remove('hidden');
-            disableBtns();
+            disableLinksAndBtns();
         })
 
     return tl;
@@ -729,14 +742,14 @@ function pageSetup() {
 
     selectAll('[data-alert-btn]').forEach(elem => {
         elem.addEventListener("click", () => {
-            disableBtns(true);
+            disableLinksAndBtns(true);
             new Alert({
                 head: 'Sorry',
                 msg: "The page you are looking for hasn't been built yet.<br>Thanks for the understanding",
                 type: 'none',
                 image: 'pro-smile.png'
             });
-            disableBtns();
+            disableLinksAndBtns();
         })
     })
 

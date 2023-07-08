@@ -36,7 +36,7 @@ const showHomePage = async (req, res) => {
     try {
         await req.alert({
             head: 'Hello !!',
-            msg: 'Welcome to Treasure Mart and thank you for testing my website. To see more sites like this check my <a href="https://github.com/emmy13" target="_blank">github</a>\n',
+            msg: 'Welcome to Treasure Mart and thank you for testing my website. To see more sites like this check my <a href="https://github.com/emmy13" target="_blank">github</a>',
             type: 'btn',
             text: ['login', 'signup'],
             image: 'happy'
@@ -54,14 +54,24 @@ const showHomePage = async (req, res) => {
 const showLoginPage = async (req, res) => {
     await req.alert({
         head: 'Hi🙌',
-        msg: 'Lets gets to know eachother, we would love to see how far we can serve you.\n',
-        type: 'none',
-        image: 'happy'
+        msg: "You can easily login anytime you want, though you'll be prompted to do so when you attempt certain functionalities.",
+        type: 'link',
+        text: 'continue without logging in',
+        url: '/home',
+        image: 'deal'
     });
     res.render('login');
 }
 
-const showSignUpPage = (req, res) => {
+const showSignUpPage = async (req, res) => {
+    await req.alert({
+        head: 'Hi🙌',
+        msg: "Lets gets to know eachother, we'd would love to see how well we can serve you.<br>You can always sign up later.",
+        type: 'link',
+        text: 'continue without logging in',
+        url: '/home',
+        image: 'happy'
+    });
     res.render('signup');
 }
 
