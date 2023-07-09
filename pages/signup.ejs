@@ -10,11 +10,11 @@
 <body data-barba="wrapper">
     
     <%- include('partials/loader') %>
-    <%- include('partials/alert') %>
     <%- include('partials/navbar') %>
-
+    
     <div class="container">
         <main data-barba="container" data-barba-namespace="signup" class="page-signup">
+            <%- include('partials/alert') %>
             <section class="full-pg row">
                 <div class="full-side full-flex">
                     <div class="form-box">
@@ -36,7 +36,7 @@
                            <div class="form-group">
                                 <button>Sign Up</button>
                            </div>
-                           <p>Already have an account, <a href="/login">Login</a></p>
+                           <p>Already have an account, <a data-sign href="/login">Login</a></p>
                         </form>
                     </div>
                 </div>

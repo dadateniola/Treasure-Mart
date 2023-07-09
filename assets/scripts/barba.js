@@ -2,20 +2,33 @@
 
 //Initialize barba
 barba.init({
+    preventRunning: true,
     transitions: [
         {
-            name: 'default',
+            from: {
+                custom: ({ trigger }) => {
+                    return ((trigger instanceof Element) ? (trigger.hasAttribute('data-sign') ? false : true) : true)
+                },
+            },
             once(data) {
-                setupClass(data);
+                new Animations({
+                    data,
+                    type: 'enter',
+                })
             },
-            
+
             enter(data) {
-                setupClass(data);
+                new Animations({
+                    data,
+                    type: 'enter',
+                })
             },
 
-            leave: () => leaveAnimation(),
+            leave: () => new Animations({
+                type: 'leave',
+            }),
 
-            beforeEnter({next}) {
+            beforeEnter({ next }) {
                 const doc = parseDOM(next.html);
                 const nextLink = selectWith(doc, 'head link:last-of-type');
                 const currentlink = select('head link:last-of-type');
@@ -23,8 +36,10 @@ barba.init({
                 currentlink.href = nextLink.href;
             }
         }, {
-            name: 'sign',
             from: {
+                custom: ({ trigger }) => {
+                    return trigger.hasAttribute('data-sign');
+                },
                 namespace: ['signup', 'login']
             },
             to: {
@@ -32,10 +47,15 @@ barba.init({
             },
 
             enter() {
-                signAnimIn()
+                new Animations({
+                    type: 'in',
+                });
             },
 
-            leave: ({next}) => signAnimOut(next.html),
+            leave: (data) => new Animations({
+                data,
+                type: 'out',
+            }),
 
         }
     ]

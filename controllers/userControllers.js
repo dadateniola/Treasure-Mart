@@ -53,11 +53,11 @@ const showHomePage = async (req, res) => {
 
 const showLoginPage = async (req, res) => {
     await req.alert({
-        head: 'Hi🙌',
+        head: 'Hey🙌',
         msg: "You can easily login anytime you want, though you'll be prompted to do so when you attempt certain functionalities.",
         type: 'link',
         text: 'continue without logging in',
-        url: '/home',
+        url: '/all',
         image: 'deal'
     });
     res.render('login');
@@ -65,14 +65,18 @@ const showLoginPage = async (req, res) => {
 
 const showSignUpPage = async (req, res) => {
     await req.alert({
-        head: 'Hi🙌',
+        head: 'Welcome🤗',
         msg: "Lets gets to know eachother, we'd would love to see how well we can serve you.<br>You can always sign up later.",
         type: 'link',
-        text: 'continue without logging in',
-        url: '/home',
+        text: 'continue without signing up',
+        url: '/all',
         image: 'happy'
     });
     res.render('signup');
 }
 
-module.exports = { showHomePage, showLoginPage, showSignUpPage };
+const showAllPage = (req, res) => {
+    res.render("all");
+}
+
+module.exports = { showHomePage, showLoginPage, showSignUpPage, showAllPage };

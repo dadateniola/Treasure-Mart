@@ -19,7 +19,6 @@ const disableLinksAndBtns = (condition = false) => {
 
             if (element.tagName === 'A') {
                 element.dataset.href = element.href;
-                element.removeAttribute('href');
                 element.addEventListener('click', preventDefault);
             }
         } else {
@@ -153,7 +152,7 @@ class SetupDocument {
                     type: 'one',
                 }
 
-                const barsAnim = barsAnimation(barsOption);
+                const barsAnim = Animations.barsAnimation(barsOption);
                 const navbarMenuAnim = SetupDocument.navbarMenuAnim();
 
                 tl.to('.navbar li button', { scale: 0 })
@@ -264,7 +263,7 @@ class Alert {
 
         //Transition new alert
         const closeAnim = this.constructor.closeAlert();
-        const showAnim = this.showAlert();
+        const showAnim = this.showNewAlert();
 
 
         //Add them to the timeline
@@ -346,6 +345,9 @@ class Alert {
 
     static closeAlert() {
         const currentAlert = select('.alert');
+
+        if (!currentAlert) return null;
+
         const tl = gsap.timeline({
             defaults: {
                 duration: durations[1]
@@ -358,7 +360,7 @@ class Alert {
         return tl;
     }
 
-    showAlert() {
+    showNewAlert() {
         const tl = gsap.timeline({
             defaults: {
                 duration: durations[1]
@@ -375,6 +377,29 @@ class Alert {
             .to(span, { xPercent: 0, stagger: 0.1 })
             .to(img, { opacity: 1 }, '<')
             .call(() => selectAllWith(this.newAlert, '.txt-anim').forEach(e => e.classList.remove("transparent")))
+            .to(span, { xPercent: 110, stagger: 0.2 })
+
+        return tl;
+    }
+
+    static showAlert() {
+        const tl = gsap.timeline({
+            defaults: {
+                duration: durations[1]
+            }
+        });
+        const alert = select('.alert');
+
+        if (!alert) return null;
+
+        const img = selectWith(alert, 'img');
+        const span = selectAllWith(alert, '.txt-anim span');
+
+        tl.set(img, { opacity: 0 })
+            .to(alert, { duration: durations[0], opacity: 1, y: 0, ease: Back.easeOut })
+            .to(span, { xPercent: 0, stagger: 0.1 })
+            .to(img, { opacity: 1 }, '<')
+            .call(() => selectAllWith(alert, '.txt-anim').forEach(e => e.classList.remove("transparent")))
             .to(span, { xPercent: 110, stagger: 0.2 })
 
         return tl;
@@ -529,228 +554,257 @@ class Home {
 //-------------------------------------------------------------------
 
 //Animation functions
-//Syntax: { set, start(t/f), type, direction, skip(t/f) }
-function onceAnim(condition = false) {
-    //Disable all buttons
-    disableLinksAndBtns(true);
+class Animations {
+    constructor(params) {
+        Object.assign(this, params);
+        this.logs = {};
 
-    const tl = gsap.timeline();
-    const heroText = selectAll('.hero .txt-anim span');
-    const barsOptions = {
-        start: true,
-        type: 'both',
-        direction: 100,
-        skip: true
+        this.init();
+
+        return this.timeline;
     }
 
-    const barsAnim = barsAnimation(barsOptions);
-    const alertAnim = showAlerts();
+    init() {
+        //Check all important parameters
+        this.checkParams();
 
-    tl.add(barsAnim)
-    if (condition) {
-        tl
-            .fromTo('.hero-img img', { scale: 1.5, opacity: 0 }, { duration: durations[1], scale: 1, opacity: 1 })
-            .to(heroText, { duration: durations[1], xPercent: 0, stagger: 0.1 })
-            .call(() => selectAll('.hero .txt-anim').forEach(elem => elem.classList.remove("transparent")))
-            .to(heroText, { duration: durations[1], xPercent: 110, stagger: 0.2 })
-    }
-    tl.call(() => disableLinksAndBtns())
-
-    //Show alerts
-    if (alertAnim) tl.add(alertAnim);
-
-    return tl;
-}
-
-function navAnim(condition = false) {
-    //Disable all buttons
-    disableLinksAndBtns(true);
-
-    const tl = gsap.timeline();
-    const heroText = selectAll('.hero .txt-anim span');
-    const barsOptions = {
-        off: true,
-        type: 'one',
-        direction: -100,
+        //Setup animation
+        this.animSetup();
     }
 
-    const barsAnim = barsAnimation(barsOptions)
+    checkParams() {
+        const isNull = true;
+        //Check data
+        if (!this.data) this.logs.data = { isNull };
+        if (!this.data?.next) this.logs.data.next = { isNull };
+        if (!this.data?.next?.html) this.logs.data.next.html = { isNull };
+        if (!this.data?.trigger) this.logs.data.trigger = { isNull };
+        if (!this.data?.next?.container) this.logs.data.next.container = { isNull };
 
-    tl.add(barsAnim)
-    if (condition) {
-        tl
-            .fromTo('.hero-img img', { scale: 1.5, opacity: 0 }, { duration: durations[1], scale: 1, opacity: 1 })
-            .to(heroText, { duration: durations[1], xPercent: 0, stagger: 0.1 })
-            .call(() => selectAll('.hero .txt-anim').forEach(elem => elem.classList.remove("transparent")))
-            .to(heroText, { duration: durations[1], xPercent: 110, stagger: 0.2 })
-    }
-    tl.call(() => disableLinksAndBtns())
-}
-
-function barsAnimation(params = {}) {
-    const tl = gsap.timeline();
-
-    //Set original position of the bars if needed
-    if (params?.set) {
-        const position = params?.set || 0;
-
-        tl.set('.bars', { xPercent: position })
+        if (Object.keys(this.logs).length) console.log(this.logs);
     }
 
-    //Check if start animation is needed
-    if (params?.start) {
-        tl.call(() => select('.loading-screen').classList.remove('on'))
-            .to('.custom-loader', { duration: (params?.skip) ? durations[0] : 0, opacity: 0, delay: (params?.skip) ? 1 : 0 })
+    animSetup() {
+        //Disable all buttons
+        disableLinksAndBtns(true);
 
-    }
+        //Define variables
+        this.timeline = gsap.timeline();
+        const type = (Array.isArray(this?.type)) ? this?.type.map(v => v.toLowerCase()) : [this?.type];
+        const isLeave = (type && (type.includes('leave') || type.includes('out')));
 
-    if (params.off) {
-        tl.set('.custom-loader', { opacity: 0 })
-    }
-
-    //Set the type of animation
-    if (params?.type == 'one') {
-        const direction = params?.direction || 0;
-
-        tl.to('.bars', { duration: durations[0], xPercent: direction, ease: "Power4.easeIn", stagger: 0.2 })
-    } else if (params?.type == 'both') {
-        const direction = params?.direction || 0;
-
-        tl.to(gsap.utils.shuffle(oddBars), { duration: durations[0], xPercent: direction, ease: "Power4.easeIn", delay: .5, stagger: 0.2 })
-            .to(gsap.utils.shuffle(evenBars), { duration: durations[0], xPercent: -(direction), ease: "Power4.easeIn", stagger: 0.2 }, "<")
-    } else {
-        const direction = params?.direction || 0;
-
-        tl.to(gsap.utils.shuffle([...oddBars, ...evenBars]), { duration: durations[0], xPercent: direction, ease: "Power4.easeIn", stagger: 0.2 })
-    }
-
-    if (params?.skip) tl.call(() => scroller.scrollTo(0))
-
-    return tl;
-}
-
-function showAlerts() {
-    const tl = gsap.timeline({
-        defaults: {
-            duration: durations[1]
+        //Remove Existing alerts
+        if (isLeave) {
+            const closeAlerts = Alert.closeAlert();
+            if (closeAlerts) this.timeline.add(closeAlerts);
         }
-    });
-    const alert = select('.alert');
+        //Setup the page
+        if (!isLeave) this.pageSetup();
+        //Setup animation for enter and leave
+        if (type && type.includes('enter')) this.animConditions();
+        if (type && type.includes('in')) this.signAnimIn();
+        if (type && type.includes('out')) this.signAnimOut(this.data.next.html);
+        if (type && type.includes('leave')) this.leaveAnim();
 
-    if (!alert) return null;
-
-    const img = selectWith(alert, 'img');
-    const span = selectAllWith(alert, '.txt-anim span')
-
-    tl.set(img, { opacity: 0 })
-        .to(alert, { duration: durations[0], opacity: 1, y: 0, ease: Back.easeOut })
-        .to(span, { xPercent: 0, stagger: 0.1 })
-        .to(img, { opacity: 1 }, '<')
-        .call(() => selectAllWith(alert, '.txt-anim').forEach(e => e.classList.remove("transparent")))
-        .to(span, { xPercent: 110, stagger: 0.2 })
-
-    return tl;
-
-}
-
-function leaveAnimation() {
-    //Disable all buttons
-    disableLinksAndBtns(true);
-
-    const tl = gsap.timeline();
-
-    const navbarMenuAnim = SetupDocument.navbarMenuAnim(true);
-
-    tl.add(navbarMenuAnim)
-
-    return tl;
-}
-
-function signAnimOut(html) {
-    //Disable all buttons
-    disableLinksAndBtns(true);
-
-    const tl = gsap.timeline();
-    const doc = parseDOM(html);
-    const fullSide = select('.full-side.img-here');
-    const img = selectWith(doc, '.full-side.img-here img');
-
-    img.classList.add('full', 'top');
-    fullSide.append(img);
-
-    tl
-        .call(() => {
-            selectAll('.full-side').forEach(e => e.classList.add('hidden'))
-            document.body.classList.add('hidden');
-        })
-        .to('.form-box h2, .form-box p, .form-box label, .form-box input, .form-box button', {
-            y: '-100vh',
-            duration: 0.6,
-            ease: 'Expo.easeIn',
-            stagger: 0.1
-        })
-        .to(img, {
-            yPercent: -100,
-            duration: durations[0]
-        }, '-=0.7')
-
-    return tl;
-}
-
-function signAnimIn() {
-    //Disable all buttons
-    disableLinksAndBtns(true);
-
-    const tl = gsap.timeline();
-
-    tl
-        .call(() => selectAll('.full-side').forEach(e => e.classList.add('hidden')))
-        .from('.form-box h2, .form-box p, .form-box label, .form-box input, .form-box button', {
-            y: '100vh',
-            duration: 0.6,
-            ease: 'Expo.easeOut',
-            stagger: 0.1
-        })
-        .call(() => {
-            selectAll('.full-side').forEach(e => e.classList.remove('hidden'));
-            document.body.classList.remove('hidden');
-            disableLinksAndBtns();
-        })
-
-    return tl;
-}
-
-//Setup the page
-function setupClass(data) {
-    const main = data.next.container;
-    const trigger = data.trigger;
-    const condition = (main.classList.contains('page-home'));
-
-    pageSetup();
-
-    if (condition) new Home();
-    else newestTl.kill();
-
-    if ((trigger instanceof Element) ? trigger.hasAttribute('data-nav') : null) {
-        navAnim(condition);
+        //Enable buttons and links
+        if (!isLeave) this.timeline.call(() => disableLinksAndBtns())
+        //Setup alert animation
+        if (!isLeave) {
+            const alertAnim = Alert.showAlert();
+            if (alertAnim) this.timeline.add(alertAnim);
+        }
     }
-    else onceAnim(condition);
-}
 
-function pageSetup() {
-    new SetupDocument();
+    pageSetup() {
+        //Setup Document
+        new SetupDocument();
 
-    selectAll('[data-alert-btn]').forEach(elem => {
-        elem.addEventListener("click", () => {
-            disableLinksAndBtns(true);
-            new Alert({
-                head: 'Sorry',
-                msg: "The page you are looking for hasn't been built yet.<br>Thanks for the understanding",
-                type: 'none',
-                image: 'pro-smile.png'
-            });
-            disableLinksAndBtns();
+        //Disable special btns
+        selectAll('[data-alert-btn]').forEach(elem => {
+            elem.addEventListener("click", () => {
+                disableLinksAndBtns(true);
+                new Alert({
+                    head: 'Sorry',
+                    msg: "The page you are looking for hasn't been built yet.<br>Thanks for the understanding",
+                    type: 'none',
+                    image: 'pro-smile.png'
+                });
+                disableLinksAndBtns();
+            })
         })
-    })
+    }
 
+    animConditions() {
+        this.main = this.data.next.container;
+        this.trigger = this.data.trigger;
+
+        const isHome = (this.main.classList.contains('page-home'));
+
+        if (isHome) new Home();
+        else newestTl.kill();
+
+        if ((this.trigger instanceof Element) ? this.trigger.hasAttribute('data-nav') : null) {
+            this.navAnim(isHome);
+        }
+        else this.onceAnim(isHome);
+    }
+
+    heroAnim() {
+        const tl = gsap.timeline();
+        const heroText = selectAll('.hero .txt-anim span');
+
+        tl
+            .fromTo('.hero-img img', { scale: 1.5, opacity: 0 }, { duration: durations[1], scale: 1, opacity: 1 })
+            .to(heroText, { duration: durations[1], xPercent: 0, stagger: 0.1 })
+            .call(() => selectAll('.hero .txt-anim').forEach(elem => elem.classList.remove("transparent")))
+            .to(heroText, { duration: durations[1], xPercent: 110, stagger: 0.2 })
+
+        return tl;
+    }
+
+    //Main Animations
+    static barsAnimation(params = {}) {
+        const tl = gsap.timeline();
+
+        //Set original position of the bars if needed
+        if (params?.set) {
+            const position = params?.set || 0;
+
+            tl.set('.bars', { xPercent: position })
+        }
+
+        //Check if start animation is needed
+        if (params?.start) {
+            tl.call(() => select('.loading-screen').classList.remove('on'))
+                .to('.custom-loader', { duration: (params?.skip) ? durations[0] : 0, opacity: 0, delay: (params?.skip) ? 1 : 0 })
+
+        }
+
+        if (params.off) {
+            tl.set('.custom-loader', { opacity: 0 })
+        }
+
+        //Set the type of animation
+        if (params?.type == 'one') {
+            const direction = params?.direction || 0;
+
+            tl.to('.bars', { duration: durations[0], xPercent: direction, ease: "Power4.easeIn", stagger: 0.2 })
+        } else if (params?.type == 'both') {
+            const direction = params?.direction || 0;
+
+            tl.to(gsap.utils.shuffle(oddBars), { duration: durations[0], xPercent: direction, ease: "Power4.easeIn", delay: .5, stagger: 0.2 })
+                .to(gsap.utils.shuffle(evenBars), { duration: durations[0], xPercent: -(direction), ease: "Power4.easeIn", stagger: 0.2 }, "<")
+        } else {
+            const direction = params?.direction || 0;
+
+            tl.to(gsap.utils.shuffle([...oddBars, ...evenBars]), { duration: durations[0], xPercent: direction, ease: "Power4.easeIn", stagger: 0.2 })
+        }
+
+        if (params?.skip) tl.call(() => scroller.scrollTo(0))
+
+        return tl;
+    }
+
+    onceAnim(isHome = false) {
+        const tl = gsap.timeline();
+        const barsOptions = {
+            start: true,
+            type: 'both',
+            direction: 100,
+            skip: true
+        }
+        const barsAnim = this.constructor.barsAnimation(barsOptions);
+
+        //Animation
+        tl.add(barsAnim);
+        //Add hero animation
+        if (isHome) {
+            const heroAnim = this.heroAnim();
+            tl.add(heroAnim);
+        }
+
+        this.timeline.add(tl);
+    }
+
+    navAnim(isHome = false) {
+        const tl = gsap.timeline();
+        const barsOptions = {
+            off: true,
+            type: 'one',
+            direction: -100,
+        }
+        const barsAnim = this.constructor.barsAnimation(barsOptions);
+
+        //Animation
+        tl.add(barsAnim)
+        //Add hero animation
+        if (isHome) {
+            const heroAnim = this.heroAnim();
+            tl.add(heroAnim);
+        }
+
+        this.timeline.add(tl);
+    }
+
+    //Static Animations
+    leaveAnim() {
+        const tl = gsap.timeline();
+
+        const navbarMenuAnim = SetupDocument.navbarMenuAnim(true);
+
+        tl.add(navbarMenuAnim)
+
+        this.timeline.add(tl);
+    }
+
+    signAnimIn() {
+        const tl = gsap.timeline();
+
+        tl
+            .call(() => selectAll('.full-side').forEach(e => e.classList.add('hidden')))
+            .from('.form-box h2, .form-box p, .form-box label, .form-box input, .form-box button', {
+                y: '100vh',
+                duration: 0.6,
+                ease: 'Expo.easeOut',
+                stagger: 0.1
+            })
+            .call(() => {
+                selectAll('.full-side').forEach(e => e.classList.remove('hidden'));
+                document.body.classList.remove('hidden');
+            })
+
+        this.timeline.add(tl);
+    }
+
+    signAnimOut(html) {
+        const tl = gsap.timeline();
+        const doc = parseDOM(html);
+        const fullSide = select('.full-side.img-here');
+        const img = selectWith(doc, '.full-side.img-here img');
+
+        img.classList.add('full', 'top');
+        fullSide.append(img);
+
+        tl
+            .call(() => {
+                selectAll('.full-side').forEach(e => e.classList.add('hidden'))
+                document.body.classList.add('hidden');
+            })
+            .to('.form-box h2, .form-box p, .form-box label, .form-box input, .form-box button', {
+                y: '-100vh',
+                duration: 0.6,
+                ease: 'Expo.easeIn',
+                stagger: 0.1
+            })
+            .to(img, {
+                yPercent: -100,
+                duration: durations[0]
+            }, '-=0.7')
+
+        this.timeline.add(tl);
+    }
 }
+
+// console.log(new Animations({
+//     type: 'leave',
+// }));
