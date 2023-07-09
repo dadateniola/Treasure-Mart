@@ -4,7 +4,7 @@ const mime = require('mime-types');
 
 const imagePath = path.join(__dirname, "..", "assets", "images");
 
-const getImages = async (dir, count) => {
+const getImages = async (dir, count = null) => {
     if (!dir) return [];
 
     const imageDir = path.join(imagePath, dir);
@@ -37,8 +37,9 @@ const showHomePage = async (req, res) => {
         await req.alert({
             head: 'Hello !!',
             msg: 'Welcome to Treasure Mart and thank you for testing my website. To see more sites like this check my <a href="https://github.com/emmy13" target="_blank">github</a>',
-            type: 'btn',
-            text: ['login', 'signup'],
+            type: 'link',
+            url: '/signup',
+            text: 'signup',
             image: 'happy'
         });
 
@@ -75,8 +76,10 @@ const showSignUpPage = async (req, res) => {
     res.render('signup');
 }
 
-const showAllPage = (req, res) => {
-    res.render("all");
+const showAllPage = async (req, res) => {
+    let products = await getImages('products');
+
+    res.render("all", { products });
 }
 
 module.exports = { showHomePage, showLoginPage, showSignUpPage, showAllPage };

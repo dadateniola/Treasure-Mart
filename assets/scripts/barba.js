@@ -1,15 +1,17 @@
 //This page controls the animations to be rendered on different actions of the page
 
 //Initialize barba
+barba.hooks.beforeEnter(({ next }) => {
+    const doc = parseDOM(next.html);
+    const nextLink = selectWith(doc, 'head link:last-of-type');
+    const currentlink = select('head link:last-of-type');
+
+    currentlink.href = nextLink.href;
+});
+
 barba.init({
-    preventRunning: true,
     transitions: [
         {
-            from: {
-                custom: ({ trigger }) => {
-                    return ((trigger instanceof Element) ? (trigger.hasAttribute('data-sign') ? false : true) : true)
-                },
-            },
             once(data) {
                 new Animations({
                     data,
@@ -25,17 +27,35 @@ barba.init({
             },
 
             leave: () => new Animations({
-                type: 'leave',
-            }),
+                type: ['leave', 'bars'],
+                options: {
+                    set: -100,
+                    end: true,
+                    type: 'one',
+                    direction: 0,
+                }
 
-            beforeEnter({ next }) {
-                const doc = parseDOM(next.html);
-                const nextLink = selectWith(doc, 'head link:last-of-type');
-                const currentlink = select('head link:last-of-type');
-
-                currentlink.href = nextLink.href;
-            }
+            })
         }, {
+            //Navbar leave animation
+            from: {
+                custom: ({ trigger }) => {
+                    return trigger.hasAttribute('data-nav');
+                },
+            },
+
+            enter(data) {
+                new Animations({
+                    data,
+                    type: 'enter',
+                })
+            },
+
+            leave: () => new Animations({
+                type: ['leave', 'nav'],
+            }),
+        }, {
+            //Animation for login and sign up page
             from: {
                 custom: ({ trigger }) => {
                     return trigger.hasAttribute('data-sign');
@@ -54,7 +74,7 @@ barba.init({
 
             leave: (data) => new Animations({
                 data,
-                type: 'out',
+                type: ['leave', 'out'],
             }),
 
         }

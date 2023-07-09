@@ -109,7 +109,6 @@ body {
     z-index: 300;
     pointer-events: none;
     background: transparent;
-    /* opacity: 0; */
 }
 
 .loading-screen {
@@ -119,10 +118,6 @@ body {
     display: flex;
     flex-direction: column;
     background-color: transparent;
-}
-
-.loading-screen.on {
-    background: linear-gradient(180deg, #BFBEC6 0%, #CCCBD1 13.54%, #D6D5DB 24.48%, #D4D3D9 52.6%, #D2D0D7 64.58%, #CECBD2 86.46%);
 }
 
 /*Alert box*/
@@ -316,6 +311,7 @@ body {
     background-size: 9px calc(200% + 20px);
     background-repeat: no-repeat;
     animation: b4 1s infinite linear;
+    z-index: 2;
 }
 
 @keyframes b4 {

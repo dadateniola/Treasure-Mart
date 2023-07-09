@@ -5,17 +5,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Products</title>
     <%- include('partials/head') %>
-    <link rel="stylesheet" href="/styles/sign.css">
+    <link rel="stylesheet" href="/styles/home.css">
 </head>
 <body data-barba="wrapper">
     
     <%- include('partials/loader') %>
     <%- include('partials/navbar') %>
     
-    <div class="container">
+    <div class="container" data-scroll-container>
         <main data-barba="container" data-barba-namespace="all" class="page-all">
             <%- include('partials/alert') %>
+            <section class=" page">
 
+            </section>
+            <section class="products page page-y">
+                <%
+                    const sections = [];
+                    const batchSize = 3;
+                    var tempSections = [];
+                    products.forEach((elem, index) => {
+                        tempSections.push(elem);
+                        if (tempSections.length === batchSize || index === products.length - 1) {
+                            sections.push(tempSections);
+                            tempSections = [];
+                        }
+                    })
+                %>
+                <% for( let i = 0; i < sections.length; i++ ) { %>
+                    <div class="sales-box">
+                        <% for( let j = 0; j < sections[i].length; j++ ) { %>
+                            <div class="sales-cont">
+                                <div class="sales-img parallax img-here">
+                                    <img src="/images/products/<%= sections[i][j] %>" alt="products">
+                                </div>
+                                <br>
+                                <h3><%= sections[i][j].split('.').shift() %></h3>
+                                <p><%= sections[i][j].length %>.00 $</p>
+                            </div>
+                        <% } %>
+                    </div>
+                <% } %>
+            </section>
         </main>
     </div>
 

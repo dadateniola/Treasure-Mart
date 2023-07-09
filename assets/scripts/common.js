@@ -68,6 +68,10 @@ class SetupDocument {
 
     setupDependencies() {
         //Add smooth scroll
+        const hasLocomotive = select('[data-scroll-container]');
+
+        if(hasLocomotive) selectAllWith(hasLocomotive, 'section').forEach(e => e.setAttribute('data-scroll-section', ''))
+
         scroller = new LocomotiveScroll({
             el: select('[data-scroll-container]'),
             smooth: true,
@@ -173,7 +177,7 @@ class SetupDocument {
                 direction: -100
             }
 
-            const barsAnim = barsAnimation(barsOption);
+            const barsAnim = Animations.barsAnimation(barsOption);
             const navbarMenuAnim = SetupDocument.navbarMenuAnim(true);
 
             tl
@@ -580,8 +584,12 @@ class Animations {
         if (!this.data?.next?.html) this.logs.data.next.html = { isNull };
         if (!this.data?.trigger) this.logs.data.trigger = { isNull };
         if (!this.data?.next?.container) this.logs.data.next.container = { isNull };
+        
+        //Check other params
+        if (!this.type) this.logs.type = { isNull };
+        if (!this.options) this.logs.options = { isNull };
 
-        if (Object.keys(this.logs).length) console.log(this.logs);
+        // if (Object.keys(this.logs).length) console.log(this.logs);
     }
 
     animSetup() {
@@ -591,7 +599,7 @@ class Animations {
         //Define variables
         this.timeline = gsap.timeline();
         const type = (Array.isArray(this?.type)) ? this?.type.map(v => v.toLowerCase()) : [this?.type];
-        const isLeave = (type && (type.includes('leave') || type.includes('out')));
+        const isLeave = (type && (type.includes('leave')));
 
         //Remove Existing alerts
         if (isLeave) {
@@ -600,14 +608,24 @@ class Animations {
         }
         //Setup the page
         if (!isLeave) this.pageSetup();
+
         //Setup animation for enter and leave
         if (type && type.includes('enter')) this.animConditions();
         if (type && type.includes('in')) this.signAnimIn();
         if (type && type.includes('out')) this.signAnimOut(this.data.next.html);
-        if (type && type.includes('leave')) this.leaveAnim();
+        if (type && type.includes('nav')) this.leaveAnim();
+        
+        //Custom bars animation
+        if (type && type.includes('bars')) {
+            if(this?.options) {
+                const barsAnim = this.constructor.barsAnimation(this.options);
+                this.timeline.add(barsAnim);
+            }
+        }
 
         //Enable buttons and links
-        if (!isLeave) this.timeline.call(() => disableLinksAndBtns())
+        if (!isLeave) this.timeline.call(() => disableLinksAndBtns());
+
         //Setup alert animation
         if (!isLeave) {
             const alertAnim = Alert.showAlert();
@@ -641,7 +659,9 @@ class Animations {
         const isHome = (this.main.classList.contains('page-home'));
 
         if (isHome) new Home();
-        else newestTl.kill();
+        else {
+            newestTl.kill();
+        };
 
         if ((this.trigger instanceof Element) ? this.trigger.hasAttribute('data-nav') : null) {
             this.navAnim(isHome);
@@ -675,9 +695,7 @@ class Animations {
 
         //Check if start animation is needed
         if (params?.start) {
-            tl.call(() => select('.loading-screen').classList.remove('on'))
-                .to('.custom-loader', { duration: (params?.skip) ? durations[0] : 0, opacity: 0, delay: (params?.skip) ? 1 : 0 })
-
+            tl.to('.custom-loader', { duration: durations[0], opacity: 0 })
         }
 
         if (params.off) {
@@ -701,6 +719,10 @@ class Animations {
         }
 
         if (params?.skip) tl.call(() => scroller.scrollTo(0))
+
+        if (params?.end) {
+            tl.to('.custom-loader', { duration: durations[1], opacity: 1 })
+        }
 
         return tl;
     }
@@ -732,6 +754,7 @@ class Animations {
             off: true,
             type: 'one',
             direction: -100,
+            skip: true
         }
         const barsAnim = this.constructor.barsAnimation(barsOptions);
 
@@ -804,7 +827,3 @@ class Animations {
         this.timeline.add(tl);
     }
 }
-
-// console.log(new Animations({
-//     type: 'leave',
-// }));
