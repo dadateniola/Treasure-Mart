@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= product?.name || 'Not Available' %></title>
+    <%- include('partials/head') %>
+    <link rel="stylesheet" href="/styles/home.css">
+</head>
+<body>
+    
+    <%- include('partials/loader') %>
+    <%- include('partials/navbar') %>
+
+    <div class="container" data-scroll-container>
+        <main data-barba="container" data-barba-namespace="all" class="page-all">
+            <%- include('partials/alert') %>
+        </main>
+    </div>
+
+    <%- include('partials/foot') %>
+
+</body>
+</html>

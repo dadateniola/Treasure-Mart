@@ -280,6 +280,72 @@
     align-items: center;
 }
 
+/* Other pages */
+.search {
+    position: relative;
+    width: min(50%, 500px);
+}
+
+.search input {
+    padding-left: 10px;
+    padding-right: 30px;
+    width: 100%;
+    border: none;
+    font-size: 1.5em;
+    border-bottom: 2px solid var(--text-bright);
+}
+
+.search input::placeholder {
+    color: black;
+}
+
+.clear-search {
+    position: absolute;
+    padding: 0;
+    top: 0;
+    right: 0;
+    width: 30px;
+    height: calc(100% - 2px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(to left, white 80%, transparent);
+    color: black;
+}
+
+.clear-search.none {
+    display: none;
+} 
+
+.sales-head.page-y {
+    padding-bottom: 0;
+}
+
+.sales-head .alert-action button {
+    padding: 16px 26px;
+    margin: 0;
+    font-size: 0.85em;
+}
+
+.sales-head .alert-action button i {
+    margin-left: 10px;
+}
+
+.navigation {
+    display: flex;
+    justify-content: space-between;
+}
+
+.navigation.page-y {
+    padding-top: calc(var(--page-y-padding) / 2);
+    padding-bottom: calc(var(--page-y-padding) / 2);
+}
+
+.navigation span {
+    text-transform: uppercase;
+}
+
+
 @media (max-width: 1100px) {
     .newest {
         height: 70vh;

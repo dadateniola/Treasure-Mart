@@ -81,6 +81,10 @@ span[data-invisible] {
     visibility: hidden;
 }
 
+.red {
+    color: var(--red);
+}
+
 /* Page styles */
 body {
     font-family: 'Poppins', sans-serif;
@@ -498,7 +502,9 @@ button {
 .parallax img {
     position: absolute;
     top: -25%;
+    left: calc(-5% / 2);
     height: 150%;
+    width: 105%;
 }
 
 .overlay {

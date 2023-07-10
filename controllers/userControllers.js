@@ -82,4 +82,13 @@ const showAllPage = async (req, res) => {
     res.render("all", { products });
 }
 
-module.exports = { showHomePage, showLoginPage, showSignUpPage, showAllPage };
+const showProductPage = async (req, res) => {
+    const product = {};
+
+    product.url = req.query?.url;
+    if(product.url) product.name = product.url.split("/").pop().split(".").shift();
+
+    res.render('product', { product });
+}
+
+module.exports = { showHomePage, showLoginPage, showSignUpPage, showAllPage, showProductPage };
