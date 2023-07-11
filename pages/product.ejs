@@ -18,7 +18,9 @@
             <section class="product-box page">
                 <div class="product-row-box img-here">
                     <div class="overlay full"></div>
-                    <img src="<%= product?.url %>" alt="product">
+                    <% if (product?.url) { %>
+                        <img src="<%= product?.url %>" alt="product">
+                    <% } %>
                     <div class="product-img-text">
                         <h5>single</h5>
                         <h6><%= product?.name || 'Not Available' %></h6>

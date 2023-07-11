@@ -70,7 +70,7 @@ class SetupDocument {
         //Add smooth scroll
         const hasLocomotive = select('[data-scroll-container]');
 
-        if(hasLocomotive) selectAllWith(hasLocomotive, 'section').forEach(e => e.setAttribute('data-scroll-section', ''))
+        if (hasLocomotive) selectAllWith(hasLocomotive, 'section').forEach(e => e.setAttribute('data-scroll-section', ''))
 
         scroller = new LocomotiveScroll({
             el: select('[data-scroll-container]'),
@@ -144,28 +144,26 @@ class SetupDocument {
             })
         })
 
-        selectAll('.navbar li button').forEach(elem => {
-            elem.addEventListener("click", function () {
-                disableLinksAndBtns(true);
-                SetupDocument.changeBarsColor('white');
-                SetupDocument.resetText(select('.navbar-menu'))
+        select('.menu-open').addEventListener("click", function () {
+            disableLinksAndBtns(true);
+            SetupDocument.changeBarsColor('white');
+            SetupDocument.resetText(select('.navbar-menu'))
 
-                const tl = gsap.timeline();
-                const barsOption = {
-                    set: 100,
-                    type: 'one',
-                }
+            const tl = gsap.timeline();
+            const barsOption = {
+                set: 100,
+                type: 'one',
+            }
 
-                const barsAnim = Animations.barsAnimation(barsOption);
-                const navbarMenuAnim = SetupDocument.navbarMenuAnim();
+            const barsAnim = Animations.barsAnimation(barsOption);
+            const navbarMenuAnim = SetupDocument.navbarMenuAnim();
 
-                tl.to('.navbar li button', { scale: 0 })
-                    .add(barsAnim)
-                    .add(navbarMenuAnim)
-                    .call(() => disableLinksAndBtns())
+            tl.to('.navbar li > *', { scale: 0 })
+                .add(barsAnim)
+                .add(navbarMenuAnim)
+                .call(() => disableLinksAndBtns())
 
-                tl.play();
-            })
+            tl.play();
         })
 
         select('.menu-close').addEventListener("click", function () {
@@ -232,13 +230,13 @@ class SetupDocument {
                 .to(navbarMenu, { opacity: 0 })
                 .to('.menu-close', { scale: 0 }, '<')
                 .set(navbarMenu, { xPercent: 110 })
-                .to('.navbar li button', { scale: 1 })
+                .to('.navbar li > *', { scale: 1 }, 0)
         } else {
             tl
                 .set(navbarMenu, { xPercent: 0, opacity: 1 })
                 .call(() => SetupDocument.resetText(navbarMenu))
                 .to('.menu-close', { scale: 1 })
-                .to(spans, { xPercent: 0, stagger: 0.1 })
+                .to(spans, { xPercent: 0, stagger: 0.1 }, '<')
                 .call(() => selectAllWith(navbarMenu, '.txt-anim').forEach(e => e.classList.remove("transparent")))
                 .to(spans, { xPercent: 110, stagger: 0.2 })
         }
@@ -584,7 +582,7 @@ class Animations {
         if (!this.data?.next?.html) this.logs.data.next.html = { isNull };
         if (!this.data?.trigger) this.logs.data.trigger = { isNull };
         if (!this.data?.next?.container) this.logs.data.next.container = { isNull };
-        
+
         //Check other params
         if (!this.type) this.logs.type = { isNull };
         if (!this.options) this.logs.options = { isNull };
@@ -614,10 +612,10 @@ class Animations {
         if (type && type.includes('in')) this.signAnimIn();
         if (type && type.includes('out')) this.signAnimOut(this.data.next.html);
         if (type && type.includes('nav')) this.leaveAnim();
-        
+
         //Custom bars animation
         if (type && type.includes('bars')) {
-            if(this?.options) {
+            if (this?.options) {
                 const barsAnim = this.constructor.barsAnimation(this.options);
                 this.timeline.add(barsAnim);
             }
