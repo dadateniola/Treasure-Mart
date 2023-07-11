@@ -7,7 +7,7 @@
     <%- include('partials/head') %>
     <link rel="stylesheet" href="/styles/home.css">
 </head>
-<body>
+<body data-barba="wrapper">
     
     <%- include('partials/loader') %>
     <%- include('partials/navbar') %>
@@ -15,6 +15,28 @@
     <div class="container" data-scroll-container>
         <main data-barba="container" data-barba-namespace="all" class="page-all">
             <%- include('partials/alert') %>
+            <section class="product-box page">
+                <div class="product-row-box img-here">
+                    <div class="overlay full"></div>
+                    <img src="<%= product?.url %>" alt="product">
+                    <div class="product-img-text">
+                        <h5>single</h5>
+                        <h6><%= product?.name || 'Not Available' %></h6>
+                    </div>
+                </div>
+                <div class="product-row-box">
+                    <div class="product-head">
+                        <div class="product-head-show">
+                            <h5>single</h5>
+                            <h6><%= product?.name || 'Not Available' %></h6>
+                        </div>
+                        <h4><%= (product?.name) ? product?.name.length : 0 %>.00$</h4>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure, minima? Rem dolorem dolore commodi, et incidunt minus amet cupiditate ad!</p>
+                        <button class="add-to-cart">Add to cart</button>
+                        <button class="add-to-wishlist">Add to wishlist</button>
+                    </div>
+                </div>
+            </section>
         </main>
     </div>
 

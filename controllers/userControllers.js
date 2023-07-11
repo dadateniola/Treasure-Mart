@@ -86,7 +86,7 @@ const showProductPage = async (req, res) => {
     const product = {};
 
     product.url = req.query?.url;
-    if(product.url) product.name = product.url.split("/").pop().split(".").shift();
+    if(product.url) product.name = product.url.split("/").pop().split(".").shift().split('-').join(' ');
 
     res.render('product', { product });
 }
