@@ -148,6 +148,10 @@
     width: 100%;
 }
 
+.sales-box h3 {
+    text-transform: capitalize;
+}
+
 .sales-cont {
     width: calc(var(--box-height) - 60px);
 }
@@ -166,11 +170,13 @@
 .collections h6 {
     font-size: 20px;
     font-weight: 500;
+    text-transform: capitalize;
 }
 
 .collections h5 {
     font-size: 18px;
     font-weight: 500;
+    text-transform: capitalize;
 }
 
 .collections.light h5 {
@@ -218,6 +224,7 @@
     color: white;
     font-weight: 500;
     display: none;
+    text-transform: capitalize;
 }
 
 .collections-img-overlay {

@@ -45,7 +45,7 @@
                                     <a href="/product?url=/images/products/<%= sections[i][j] %>"><img src="/images/products/<%= sections[i][j] %>" alt="products"></a>
                                 </div>
                                 <br>
-                                <h3><%= sections[i][j].split('.').shift() %></h3>
+                                <h3><%= sections[i][j].split('.').shift().split('-').join(' ') %></h3>
                                 <p><%= sections[i][j].length %>.00 $</p>
                             </div>
                         <% } %>

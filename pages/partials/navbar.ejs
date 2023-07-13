@@ -2,16 +2,16 @@
     <nav>
         <ul>
             <li>
-                <button class="menu-open"><i class="fa-solid fa-bars"></i></button>
+                <button class="menu-open" data-menu><i class="fa-solid fa-bars"></i></button>
             </li>
             <li>
-                <button><i class="fa-solid fa-shopping-cart"></i></button>
+                <button class="cart-open" data-cart><i class="fa-solid fa-shopping-cart"></i></button>
                 <a href="/product"><i class="fa-solid fa-user"></i></a>
             </li>
         </ul>
     </nav>
-    <button class="menu-close"><i class="fa-solid fa-xmark"></i></button>
-    <div class="navbar-menu">
+    <button class="menu-close" data-menu><i class="fa-solid fa-xmark"></i></button>
+    <div class="navbar-menu" id="menu" data-navbar-open>
         <div class="navbar-menu-text">
             <h5><a data-nav href="/" class="txt-anim">home</a></h5>
             <h5>
@@ -19,6 +19,49 @@
                 <a data-nav href="/signup" class="txt-anim"> signup</a>
             </h5>
             <h5><a data-nav href="/all" class="txt-anim">product listings</a></h5>
+        </div>
+    </div>
+    <div class="cart" id="cart" data-navbar-open>
+        <div class="cart-scroller">
+            <div class="cart-box">
+                <div class="cart-head anim">
+                    <h5>Your Cart</h5>
+                    <span><%= locals.cart.length %> items</span>
+                </div>
+                <div class="cart-head anim">
+                    <span>Total:</span>
+                    <h5>$<%= locals.cart.reduce((acc, curr) => acc + curr.length, 0) %>.00</h5>
+                </div>
+            </div>
+            <% for( let i = 0; i < locals.cart.length; i++ ) { %>
+                <div class="cart-item">
+                    <div>
+                        <div class="cart-img img-here">
+                            <a data-nav href="/product?url=/images/newest/<%= locals.cart[i] %>"><img src="/images/newest/<%= locals.cart[i] %>" alt="cart item"></a>
+                        </div>
+                    </div>
+                    <div class="cart-item-box">
+                        <div class="cart-text">
+                            <div>
+                                <h5><%= locals.cart[i].split("/").pop().split(".").shift().split('-').join(' ') %></h5>
+                                <h6>newest</h6>
+                            </div>
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem tenetur minima temporibus.
+                                Beatae, possimus.</p>
+                        </div>
+                        <div class="cart-info">
+                            <div class="cart-price">
+                                <h5>$<%= locals.cart[i].length %>.00</h5>
+                            </div>
+                            <div class="cart-action">
+                                <button>
+                                    <i class="fa-solid fa-xmark"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% } %>
         </div>
     </div>
 </div>

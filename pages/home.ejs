@@ -68,30 +68,16 @@
                         </div>
                     </div>
                     <div class="sales-box">
-                        <div class="sales-cont">
-                            <div class="sales-img parallax img-here">
-                                <img src="/images/popular/shelves.jpg" alt="popular">
+                        <% for( let i = 0; i < popular.length; i++ ) { %>
+                            <div class="sales-cont">
+                                <div class="sales-img parallax img-here">
+                                    <a href="/product?url=/images/popular/<%= popular[i] %>"><img src="/images/popular/<%= popular[i] %>" alt="popular"></a>
+                                </div>
+                                <br>
+                                <h3><%= popular[i].split('.').shift().split('-').join(' ') %></h3>
+                                <p><%= popular[i].length %>.00 $</p>
                             </div>
-                            <br>
-                            <h3>Vintage Drawers</h3>
-                            <p>100.00 $</p>
-                        </div>
-                        <div class="sales-cont">
-                            <div class="sales-img parallax img-here">
-                                <img src="/images/popular/living room.jpg" alt="popular">
-                            </div>
-                            <br>
-                            <h3>Fully Cushioned Couch</h3>
-                            <p>250.00 $</p>
-                        </div>
-                        <div class="sales-cont">
-                            <div class="sales-img parallax img-here">
-                                <img src="/images/popular/scent.jpg" alt="popular">
-                            </div>
-                            <br>
-                            <h3>Toothpick Stand</h3>
-                            <p>15.99 $</p>
-                        </div>
+                        <% } %>
                     </div>
                 </div>
                 <div class="gap"></div>
@@ -108,33 +94,17 @@
                         </div>
                     </div>
                     <div class="sales-box">
-                        <div class="sales-cont">
-                            <div class="sales-img parallax img-here">
-                                <img src="/images/deals/watch.jpg" alt="deal">
+                        <% for( let i = 0; i < deals.length; i++ ) { %>
+                            <div class="sales-cont">
+                                <div class="sales-img parallax img-here">
+                                    <a href="/product?url=/images/deals/<%= deals[i] %>"><img src="/images/deals/<%= deals[i] %>" alt="deal"></a>
+                                </div>
+                                <br>
+                                <h3><%= deals[i].split('.').shift().split('-').join(' ') %></h3>
+                                <span class="old"><%= deals[i].length/2 %>.00 $</span>
+                                <span class="new"><%= deals[i].length %>.00 $</span>
                             </div>
-                            <br>
-                            <h3>Glashutte Original Watch</h3>
-                            <span class="old">1,500.00 $</span>
-                            <span class="new">1,200.00 $</span>
-                        </div>
-                        <div class="sales-cont">
-                            <div class="sales-img parallax img-here">
-                                <img src="/images/deals/watch with beads.jpg" alt="deal">
-                            </div>
-                            <br>
-                            <h3>Jaegar LeCoultre Watch</h3>
-                            <span class="old">25,000.00 $</span>
-                            <span class="new">20,150.00 $</span>
-                        </div>
-                        <div class="sales-cont">
-                            <div class="sales-img parallax img-here">
-                                <img src="/images/deals/vase.jpg" alt="deal">
-                            </div>
-                            <br>
-                            <h3>Toothpick Stand</h3>
-                            <span class="old">155.99 $</span>
-                            <span class="new">85.00 $</span>
-                        </div>
+                        <% } %>
                     </div>
                 </div>
             </section>
@@ -146,64 +116,51 @@
                     </div>
                 </div>
                 <div class="gap"></div>
-                <div class="collections-section hor">
-                    <div class="collections-text">
-                        <h6>View our unique collections and find the one that suits your needs.</h6>
-                        <br>
-                        <a href="/">View all collections</a>
-                    </div>
-                    <div class="collections-box flex-end">
-                        <div class="collections-img parallax img-here">
-                            <img src="/images/collections/furniture.jpg" alt="collections">
-                            <div class="collections-img-overlay full"></div>
-                            <h3 class="collections-img-text">Living Room Set</h3>
+                <% 
+                    let skipCount = 0
+                    let isStart = true;
+                %>
+                <% collections.forEach((elem, index) => { %>
+                    <% if (isStart) { %>
+                        <% isStart = false %>
+                        <div class="collections-section hor">
+                            <div class="collections-text">
+                                <h6>View our unique collections and find the one that suits your needs.</h6>
+                                <br>
+                                <a href="/">View all collections</a>
+                            </div>
+                            <div class="collections-box flex-end">
+                                <div class="collections-img parallax img-here">
+                                    <img src="/images/collections/<%= elem %>" alt="collection">
+                                    <div class="collections-img-overlay full"></div>
+                                    <h3 class="collections-img-text"><%= elem.split('.').shift() %></h3>
+                                </div>
+                                <div class="collections-box-text">
+                                    <h5>collection</h5>
+                                    <h6><%= elem.split('.').shift() %></h6>
+                                </div>
+                            </div>
                         </div>
-                        <div class="collections-box-text">
-                            <h5>Collection</h5>
-                            <h6>Living Room Set</h6>
+                    <% } else { %>
+                        <div class="collections-section <%= (skipCount == 0) ? 'hor' : 'ver' %>">
+                            <% if (index%2 == 0) { %>
+                                <div></div>
+                            <% } %>
+                            <div class="collections-box">
+                                <div class="collections-img parallax img-here">
+                                    <img src="/images/collections/<%= elem %>" alt="collection">
+                                    <div class="collections-img-overlay full"></div>
+                                    <h3 class="collections-img-text"><%= elem.split('.').shift() %></h3>
+                                </div>
+                                <div class="collections-box-text">
+                                    <h5>Collection</h5>
+                                    <h6><%= elem.split('.').shift() %></h6>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="collections-section ver">
-                    <div class="collections-box">
-                        <div class="collections-img parallax img-here">
-                            <img src="/images/collections/brick wall.jpg" alt="collections">
-                            <div class="collections-img-overlay full"></div>
-                            <h3 class="collections-img-text">Kitchen Set</h3>
-                        </div>
-                        <div class="collections-box-text">
-                            <h5>Collection</h5>
-                            <h6>Kitchen Set</h6>
-                        </div>
-                    </div>
-                </div>
-                <div class="collections-section ver">
-                    <div></div>
-                    <div class="collections-box">
-                        <div class="collections-img parallax img-here">
-                            <img src="/images/collections/architecture.jpg" alt="collections">
-                            <div class="collections-img-overlay full"></div>
-                            <h3 class="collections-img-text">Bedroom Set</h3>
-                        </div>
-                        <div class="collections-box-text">
-                            <h5>Collection</h5>
-                            <h6>Bedroom Set</h6>
-                        </div>
-                    </div>
-                </div>
-                <div class="collections-section hor">
-                    <div class="collections-box flex-start">
-                        <div class="collections-img parallax img-here">
-                            <img src="/images/collections/kitchen.jpg" alt="collections">
-                            <div class="collections-img-overlay full"></div>
-                            <h3 class="collections-img-text">Dining Room Set</h3>
-                        </div>
-                        <div class="collections-box-text">
-                            <h5>Collection</h5>
-                            <h6>Dining Room Set</h6>
-                        </div>
-                    </div>
-                </div>
+                    <% } %>
+                    <% (skipCount == 0) ? skipCount = 2 : skipCount-- %>
+                <% }) %>
             </section>
             <section class="newsletter page page-y">
                 <div class="newsletter-box">
@@ -223,9 +180,6 @@
                     </div>
                 </div>
             </section>
-
-            <!-- Changing scripts -->
-            <script src="/scripts/home.js"></script>
         </main>
     </div>
 

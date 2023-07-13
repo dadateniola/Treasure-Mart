@@ -86,9 +86,6 @@ class SetupDocument {
             elem.setAttribute('data-scroll-speed', '-0.15');
             elem.setAttribute('data-scroll-position', 'top');
         })
-
-        //Set menu position
-        gsap.set('.navbar-menu', { xPercent: 110 })
     }
 
     setupBars(num = 1) {
@@ -107,7 +104,7 @@ class SetupDocument {
 
     static setupText(parent = false) {
         //Add txt-anim to headers
-        selectAll('.head h1, .head span, .options span').forEach(elem => {
+        selectAll('.head h1, .head span, .options span, .anim > *').forEach(elem => {
             elem.classList.add("txt-anim");
         })
 
@@ -128,42 +125,28 @@ class SetupDocument {
     }
 
     setupNavbar() {
-        selectAll('.navbar button').forEach(elem => {
-            elem.classList.remove('transparent');
+        selectAll('.menu-open, .cart-open').forEach(e => {
+            e.addEventListener("click", function () {
+                disableLinksAndBtns(true);
+                SetupDocument.changeBarsColor('white');
+                SetupDocument.resetText(select(`#${Object.keys(this.dataset)}`))
 
-            elem.addEventListener("mouseenter", function () {
-                const icon = selectWith(this, 'i');
+                const tl = gsap.timeline();
+                const barsOption = {
+                    set: 100,
+                    type: 'one',
+                }
 
-                gsap.to(icon, { duration: 0.2, scale: 1.1 })
+                const barsAnim = Animations.barsAnimation(barsOption);
+                const navbarAnim = SetupDocument.navbarOpen(this);
+
+                tl.to('.navbar li > *', { scale: 0 })
+                    .add(barsAnim)
+                    .add(navbarAnim)
+                    .call(() => disableLinksAndBtns())
+
+                tl.play();
             })
-
-            elem.addEventListener("mouseleave", function () {
-                const icon = selectWith(this, 'i');
-
-                gsap.to(icon, { duration: 0.2, scale: 1 })
-            })
-        })
-
-        select('.menu-open').addEventListener("click", function () {
-            disableLinksAndBtns(true);
-            SetupDocument.changeBarsColor('white');
-            SetupDocument.resetText(select('.navbar-menu'))
-
-            const tl = gsap.timeline();
-            const barsOption = {
-                set: 100,
-                type: 'one',
-            }
-
-            const barsAnim = Animations.barsAnimation(barsOption);
-            const navbarMenuAnim = SetupDocument.navbarMenuAnim();
-
-            tl.to('.navbar li > *', { scale: 0 })
-                .add(barsAnim)
-                .add(navbarMenuAnim)
-                .call(() => disableLinksAndBtns())
-
-            tl.play();
         })
 
         select('.menu-close').addEventListener("click", function () {
@@ -176,10 +159,10 @@ class SetupDocument {
             }
 
             const barsAnim = Animations.barsAnimation(barsOption);
-            const navbarMenuAnim = SetupDocument.navbarMenuAnim(true);
+            const navbarAnim = SetupDocument.navbarOpen(null, true);
 
             tl
-                .add(navbarMenuAnim)
+                .add(navbarAnim)
                 .add(barsAnim)
                 .call(() => disableLinksAndBtns())
 
@@ -220,25 +203,30 @@ class SetupDocument {
         selectAll('.bars').forEach(elem => elem.style.backgroundColor = color);
     }
 
-    static navbarMenuAnim(condition = false) {
-        const navbarMenu = select('.navbar-menu');
-        const spans = selectAllWith(navbarMenu, '.txt-anim span');
+    static navbarOpen(trigger, condition = false) {
+        const isAll = (trigger) ? false : true;
+        const triggered = (isAll) ? selectAll('[data-navbar-open]') : select(`#${Object.keys(trigger.dataset)}`)
         const tl = gsap.timeline();
 
         if (condition) {
             tl
-                .to(navbarMenu, { opacity: 0 })
+                .to(triggered, { opacity: 0 })
                 .to('.menu-close', { scale: 0 }, '<')
-                .set(navbarMenu, { xPercent: 110 })
+                .set(triggered, { display: 'none' })
                 .to('.navbar li > *', { scale: 1 }, 0)
         } else {
+            const spans = selectAllWith(triggered, '.txt-anim span');
+            const items = selectAllWith(triggered, '.cart-item');
+
+            if(items.length) tl.set(items, { opacity: 0 })
             tl
-                .set(navbarMenu, { xPercent: 0, opacity: 1 })
-                .call(() => SetupDocument.resetText(navbarMenu))
+                .set(triggered, { display: 'block', opacity: 1 })
+                .call(() => SetupDocument.resetText(triggered))
                 .to('.menu-close', { scale: 1 })
                 .to(spans, { xPercent: 0, stagger: 0.1 }, '<')
-                .call(() => selectAllWith(navbarMenu, '.txt-anim').forEach(e => e.classList.remove("transparent")))
+                .call(() => selectAllWith(triggered, '.txt-anim').forEach(e => e.classList.remove("transparent")))
                 .to(spans, { xPercent: 110, stagger: 0.2 })
+                if(items.length) tl.to(items, { opacity: 1 }, '<')
         }
 
         return tl;
@@ -771,9 +759,9 @@ class Animations {
     leaveAnim() {
         const tl = gsap.timeline();
 
-        const navbarMenuAnim = SetupDocument.navbarMenuAnim(true);
+        const navbarAnim = SetupDocument.navbarOpen(null, true);
 
-        tl.add(navbarMenuAnim)
+        tl.add(navbarAnim)
 
         this.timeline.add(tl);
     }
