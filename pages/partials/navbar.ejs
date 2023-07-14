@@ -6,7 +6,7 @@
             </li>
             <li>
                 <button class="cart-open" data-cart><i class="fa-solid fa-shopping-cart"></i></button>
-                <a href="/product"><i class="fa-solid fa-user"></i></a>
+                <a href="/account"><i class="fa-solid fa-user"></i></a>
             </li>
         </ul>
     </nav>
@@ -34,16 +34,17 @@
                 </div>
             </div>
             <% for( let i = 0; i < locals.cart.length; i++ ) { %>
+                <% const url = `/product?url=/images/newest/${locals.cart[i]}` %>
                 <div class="cart-item">
                     <div>
                         <div class="cart-img img-here">
-                            <a data-nav href="/product?url=/images/newest/<%= locals.cart[i] %>"><img src="/images/newest/<%= locals.cart[i] %>" alt="cart item"></a>
+                            <a data-nav href="<%= url %>"><img src="/images/newest/<%= locals.cart[i] %>" alt="cart item"></a>
                         </div>
                     </div>
                     <div class="cart-item-box">
                         <div class="cart-text">
                             <div>
-                                <h5><%= locals.cart[i].split("/").pop().split(".").shift().split('-').join(' ') %></h5>
+                                <a data-nav href="<%= url %>"><h5><%= locals.cart[i].split("/").pop().split(".").shift().split('-').join(' ') %></h5></a>
                                 <h6>newest</h6>
                             </div>
                             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem tenetur minima temporibus.

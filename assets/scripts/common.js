@@ -127,8 +127,9 @@ class SetupDocument {
     setupNavbar() {
         selectAll('.menu-open, .cart-open').forEach(e => {
             e.addEventListener("click", function () {
+                const navColor = getComputedStyle(select(':root')).getPropertyValue('--nav-color');
                 disableLinksAndBtns(true);
-                SetupDocument.changeBarsColor('white');
+                SetupDocument.changeBarsColor(navColor);
                 SetupDocument.resetText(select(`#${Object.keys(this.dataset)}`))
 
                 const tl = gsap.timeline();

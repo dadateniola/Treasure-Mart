@@ -53,9 +53,20 @@ const showProductPage = async (req, res) => {
     const product = {};
 
     product.url = req.query?.url;
-    if (product.url) product.name = product.url.split("/").pop().split(".").shift().split('-').join(' ');
+    if (product.url) {
+        product.length = product.url.split("/").pop().length;
+        product.name = product.url.split("/").pop().split(".").shift().split('-').join(' ');
+    }
 
     res.render('product', { product });
 }
 
-module.exports = { showHomePage, showLoginPage, showSignUpPage, showAllPage, showProductPage };
+const showAccountPage = (req, res) => {
+    res.render('account');
+}
+
+module.exports = {
+    showHomePage, showLoginPage,
+    showSignUpPage, showAllPage,
+    showProductPage, showAccountPage,
+};
