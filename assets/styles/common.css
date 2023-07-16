@@ -40,8 +40,8 @@
 /*
     Z-INDEX RANKINGS: 
     ----------------------------
+    .menu-close(500)
     .navbar-menu(400)
-    .menu-close(400)
     .loading-container(300)
     .navbar(200)
     .alert-cont(100)
@@ -270,7 +270,7 @@ body {
     position: fixed;
     top: 20px;
     right: 20px;
-    z-index: 400;
+    z-index: 500;
     transform: scale(0);
 }
 

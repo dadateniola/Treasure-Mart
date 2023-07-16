@@ -14,6 +14,9 @@ router.use(async (req, res, next) => {
 })
 
 //Routes
+
+//FIX NAVBAR ERROR
+
 router.get("/", showHomePage);
 
 router.get("/login", showLoginPage)
