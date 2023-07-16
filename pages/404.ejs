@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 Not Found</title>
+    <%- include('partials/head') %>
+    <link rel="stylesheet" href="/styles/home.css">
+</head>
+<body data-barba="wrapper">
+    
+    <%- include('partials/loader') %>
+    <%- include('partials/navbar') %>
+
+    <div class="container" data-scroll-container>
+        <main data-barba="container" data-barba-namespace="all" class="page-all">
+            <%- include('partials/alert') %>
+            <section class="page-y page full-pg not-found">
+                <h5><span class="red">404</span><br>PAGE NOT FOUND</h5>
+                <p>The page you're looking for could not be found, try another link or</p>
+                <a href="/">go back to homepage</a>
+            </section>
+        </main>
+    </div>
+
+    <%- include('partials/foot') %>
+
+</body>
+</html>

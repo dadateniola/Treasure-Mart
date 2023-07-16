@@ -1,6 +1,6 @@
 const { Router } = require('express');
 
-const { showHomePage, showLoginPage, showSignUpPage, showAllPage, showProductPage, showAccountPage } = require('../controllers/userControllers');
+const { showHomePage, showLoginPage, showSignUpPage, showAllPage, showProductPage, showAccountPage, show404 } = require('../controllers/userControllers');
 const Methods = require('../Methods/Methods');
 
 const router = Router();
@@ -25,5 +25,7 @@ router.get('/all', showAllPage)
 router.get('/product', showProductPage)
 
 router.get('/account', showAccountPage)
+
+router.get('/404', show404)
 
 module.exports = router;

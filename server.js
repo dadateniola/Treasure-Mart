@@ -104,4 +104,8 @@ app.use((req, res, next) => {
 
 app.use(clientRoutes)
 
+app.use((req, res) => {
+    res.redirect('/404')
+})
+
 app.listen(port, (err) => console.log(err || `Visit http://localhost:${port}/`))

@@ -65,8 +65,13 @@ const showAccountPage = (req, res) => {
     res.render('account');
 }
 
+const show404 = (req, res) => {
+    res.render('404');
+}
+
 module.exports = {
     showHomePage, showLoginPage,
     showSignUpPage, showAllPage,
     showProductPage, showAccountPage,
+    show404,
 };
