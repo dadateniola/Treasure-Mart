@@ -45,6 +45,7 @@
     .loading-container(300)
     .navbar(200)
     .alert-cont(100)
+    .preload: -1
     ----------------------------
 */
 
@@ -93,6 +94,17 @@ body {
     font-family: 'Poppins', sans-serif;
     font-weight: 500;
     background-color: var(--color-light);
+}
+
+.preload {
+    position: fixed;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    visibility: hidden;
+    pointer-events: none;
+    display: none;
+    z-index: -1;
 }
 
 .page {
