@@ -4,7 +4,7 @@ const Methods = require('../Methods/Methods');
 const showHomePage = async (req, res) => {
     await req.alert({
         head: 'Hello !!',
-        msg: 'Welcome to Treasure Mart and thank you for testing my website. To see more sites like this check my <a href="https://github.com/emmy13" target="_blank">github</a>',
+        msg: 'Welcome to Treasure Mart and thank you for testing my website. To see more sites like this check my <a href="https://github.com/dadateniola" target="_blank">github</a>',
         type: 'link',
         url: '/signup',
         text: 'signup',
